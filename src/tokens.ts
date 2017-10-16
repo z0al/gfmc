@@ -1,9 +1,9 @@
-// All Tokens have type attribute
+// Token interface
 export interface Token {
   type: string
 }
 
-// Thematic break
+// Thematic Break token
 export interface ThematicBreak extends Token {
   char: string
 }

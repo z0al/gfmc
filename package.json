@@ -4,19 +4,28 @@
   "description": "Spec compliance GitHub Flavored Markdown(GFM) compiler",
   "license": "MIT",
   "author": "Ahmed T. Ali <ah.tajelsir@gmail.com>",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist/gfmc*",
+    "README.md"
+  ],
   "main": "dist/gfmc.cjs.js",
   "module": "dist/gfmc.esm.js",
   "browser": "dist/gfmc.umd.js",
   "repository": "https://github.com/ahmed-taj/gfmc",
   "devDependencies": {
+    "@types/node": "^8.0.36",
+    "ava": "^0.22.0",
+    "html-minifier": "^3.5.5",
     "rollup": "^0.50.0",
+    "rollup-plugin-copy": "^0.2.3",
     "rollup-plugin-typescript": "^0.8.1",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
   },
   "scripts": {
     "build": "rollup  -c",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix"
+    "lint": "tslint -c tslint.json '(src|test)/**/*.ts' --fix",
+    "test": "ava dist/test/test.js",
+    "pretest": "npm run build"
   }
 }
