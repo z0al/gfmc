@@ -8,4 +8,4 @@ TODO
 
 ## License
 
-MIT ©️ [Ahmed T. Ali](https://github.com/ahmed-taj)
+MIT © [Ahmed T. Ali](https://github.com/ahmed-taj)

@@ -2,7 +2,8 @@
   "extends": ["tslint:recommended"],
   "jsRules": {},
   "rules": {
-    "quotemark": [true, "single"],
-    "semicolon": false
+    "interface-name": false,
+    "semicolon": false,
+    "quotemark": [true, "single"]
   }
 }
