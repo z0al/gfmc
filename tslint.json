@@ -4,6 +4,7 @@
   "rules": {
     "interface-name": false,
     "semicolon": false,
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "trailing-comma": false
   }
 }
