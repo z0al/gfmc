@@ -1,5 +1,4 @@
 // Packages
-import copy from 'rollup-plugin-copy'
 import typescript from 'rollup-plugin-typescript'
 
 // Ours
@@ -32,19 +31,15 @@ export default [{
   ]
 }, {
   // Test script
-  input: 'test/test.ts',
+  input: 'test/spec.ts',
   output: [
     {
-      file: 'dist/test/test.js',
+      file: 'dist/spec-test.js',
       format: 'cjs'
     }
   ],
   external: ['ava', 'html-minifier'],
   plugins: [
-    copy({
-      "test/spec.txt": 'dist/test/spec.txt',
-      verbose: false
-    }),
     typescript({
       typescript: require('typescript')
     })
