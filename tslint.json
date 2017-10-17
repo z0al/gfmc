@@ -1,9 +1,6 @@
 {
-  "extends": ["tslint:recommended"],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
-    "interface-name": false,
-    "semicolon": false,
-    "quotemark": [true, "single"],
-    "trailing-comma": false
+    "interface-name": false
   }
 }

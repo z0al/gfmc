@@ -25,8 +25,9 @@
   },
   "scripts": {
     "build": "rollup  -c",
-    "format": "prettier --write --no-semi --single-quote './**/*.{ts,js,json}'",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "format":
+      "prettier --write --no-semi --single-quote '{src,test}/**/*.{ts,js,json}'",
+    "lint": "tslint -c tslint.json '{src,test}/**/*.ts' --fix",
     "maketests": "node scripts/maketests.js",
     "postmaketests": "npm run format -s",
     "test": "ava dist/*-test.js",
