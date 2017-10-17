@@ -2,11 +2,7 @@
   "compilerOptions": {
     "module": "es2015",
     "sourceMap": true,
-    "lib": [
-      "esnext"
-    ]
+    "lib": ["esnext"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

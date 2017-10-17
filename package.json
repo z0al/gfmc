@@ -4,10 +4,7 @@
   "description": "Spec compliance GitHub Flavored Markdown(GFM) compiler",
   "license": "MIT",
   "author": "Ahmed T. Ali <ah.tajelsir@gmail.com>",
-  "files": [
-    "dist/gfmc*",
-    "README.md"
-  ],
+  "files": ["dist/gfmc*", "README.md"],
   "main": "dist/gfmc.cjs.js",
   "module": "dist/gfmc.esm.js",
   "browser": "dist/gfmc.umd.js",
@@ -16,17 +13,28 @@
     "@types/node": "^8.0.36",
     "ava": "^0.22.0",
     "html-minifier": "^3.5.5",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.2.3",
+    "prettier": "^1.7.4",
     "request": "^2.83.0",
     "rollup": "^0.50.0",
     "rollup-plugin-typescript": "^0.8.1",
     "tslint": "^5.7.0",
+    "tslint-config-prettier": "^1.5.0",
     "typescript": "^2.5.3"
   },
   "scripts": {
     "build": "rollup  -c",
+    "format": "prettier --write --no-semi --single-quote './**/*.{ts,js,json}'",
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "maketests": "node scripts/maketests.js",
     "test": "ava dist/*-test.js",
+    "precommit": "lint-staged",
     "pretest": "npm run build"
+  },
+  "lint-staged": {
+    "*.ts": ["prettier --write --no-semi --single-quote", "tslint", "git add"],
+    "*.js": ["prettier --write --no-semi --single-quote", "git add"],
+    "*.json": ["prettier --write", "git add"]
   }
 }

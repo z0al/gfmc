@@ -5,7 +5,7 @@ import { ThematicBreak, Token } from './tokens'
  * GFM Parser
  */
 export class Parser {
-  constructor(private tokens: Token[], private renderer: Renderer) { }
+  constructor(private tokens: Token[], private renderer: Renderer) {}
 
   public parse(): string {
     // Holds current token

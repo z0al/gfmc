@@ -97,7 +97,7 @@ const stringEscape = str => {
   return (
     str
       // escape (')
-      .replace(/(([^\\])(')|\\$)/g, '$2\\\'')
+      .replace(/(([^\\])(')|\\$)/g, "$2\\'")
       // escape octal literals
       .replace(/\\(?:[1-7])/g, '\\\\')
   )
