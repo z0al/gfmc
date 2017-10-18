@@ -1,22 +1,29 @@
 import { Renderer } from './render'
-import { ThematicBreak, Token } from './tokens'
+import * as t from './tokens'
 
 /**
  * GFM Parser
  */
 export class Parser {
-  constructor(private tokens: Token[], private renderer: Renderer) {}
+  constructor(private tokens: t.Token[], private renderer: Renderer) {}
 
   public parse(): string {
     // Holds current token
-    let tok: Token = this.nextToken()
+    let tok: t.Token = this.nextToken()
     let output = ''
 
     while (tok) {
       // Type check
       switch (tok.type) {
+        case 'atx_heading':
+          output += this.renderer.atx_heading(
+            (tok as t.ATXHeading).text,
+            (tok as t.ATXHeading).level
+          )
+          break
+
         case 'thematic_break':
-          output += this.renderer.thematic_break((tok as ThematicBreak).char)
+          output += this.renderer.thematic_break((tok as t.ThematicBreak).char)
           break
       }
 
@@ -27,7 +34,7 @@ export class Parser {
     return output
   }
 
-  private nextToken(): Token {
-    return this.tokens.pop()
+  private nextToken(): t.Token {
+    return this.tokens.shift()
   }
 }

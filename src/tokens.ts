@@ -7,3 +7,9 @@ export interface Token {
 export interface ThematicBreak extends Token {
   char: string
 }
+
+// ATX Heading token
+export interface ATXHeading extends Token {
+  level: number
+  text: string
+}
