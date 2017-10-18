@@ -29,6 +29,11 @@ export class BlockScanner {
     //
     // ref: https://github.github.com/gfm/#insecure-characters
     this.src = src.replace('\u0000', '\uFFFD')
+
+    // A line ending is a newline (U+000A), a carriage return (U+000D)
+    // not followed by a newline, or a carriage return and a following
+    // newline.
+    this.src = this.src.replace(/\r\n|\r/g, '\n')
   }
 
   public scan(): Token[] {
