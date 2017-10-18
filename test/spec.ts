@@ -24,17 +24,17 @@ test('Tabs (https://github.github.com/gfm/#example-1)', t => {
 })
 
 test('Tabs (https://github.github.com/gfm/#example-2)', t => {
-  const actual = normalize(compile('	foo→baz→→bim'))
+  const actual = normalize(compile('  	foo→baz→→bim'))
   t.is('<pre><code>foo	baz→→bim</code></pre>', actual)
 })
 
 test('Tabs (https://github.github.com/gfm/#example-3)', t => {
-  const actual = normalize(compile('a	a\nὐ→a'))
+  const actual = normalize(compile('    a	a\n    ὐ→a'))
   t.is('<pre><code>a	aὐ→a</code></pre>', actual)
 })
 
 test('Tabs (https://github.github.com/gfm/#example-4)', t => {
-  const actual = normalize(compile('- foo\n\n	bar'))
+  const actual = normalize(compile('  - foo\n\n	bar'))
   t.is('<ul><li><p>foo</p><p>bar</p></li></ul>', actual)
 })
 
@@ -54,12 +54,12 @@ test('Tabs (https://github.github.com/gfm/#example-7)', t => {
 })
 
 test('Tabs (https://github.github.com/gfm/#example-8)', t => {
-  const actual = normalize(compile('foo\n	bar'))
+  const actual = normalize(compile('    foo\n	bar'))
   t.is('<pre><code>foobar</code></pre>', actual)
 })
 
 test('Tabs (https://github.github.com/gfm/#example-9)', t => {
-  const actual = normalize(compile('- foo\n- bar\n	 - baz'))
+  const actual = normalize(compile(' - foo\n   - bar\n	 - baz'))
   t.is(
     '<ul><li>foo<ul><li>bar<ul><li>baz</li></ul></li></ul></li></ul>',
     actual
@@ -102,17 +102,17 @@ test('Thematic breaks (https://github.github.com/gfm/#example-16)', t => {
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-17)', t => {
-  const actual = normalize(compile('***\n***\n***'))
+  const actual = normalize(compile(' ***\n  ***\n   ***'))
   t.is('<hr><hr><hr>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-18)', t => {
-  const actual = normalize(compile('***'))
+  const actual = normalize(compile('    ***'))
   t.is('<pre><code>***</code></pre>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-19)', t => {
-  const actual = normalize(compile('Foo\n***'))
+  const actual = normalize(compile('Foo\n    ***'))
   t.is('<p>Foo***</p>', actual)
 })
 
@@ -122,12 +122,12 @@ test('Thematic breaks (https://github.github.com/gfm/#example-20)', t => {
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-21)', t => {
-  const actual = normalize(compile('- - -'))
+  const actual = normalize(compile(' - - -'))
   t.is('<hr>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-22)', t => {
-  const actual = normalize(compile('**  * ** * ** * **'))
+  const actual = normalize(compile(' **  * ** * ** * **'))
   t.is('<hr>', actual)
 })
 
@@ -137,7 +137,7 @@ test('Thematic breaks (https://github.github.com/gfm/#example-23)', t => {
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-24)', t => {
-  const actual = normalize(compile('- - - -'))
+  const actual = normalize(compile('- - - -    '))
   t.is('<hr>', actual)
 })
 
@@ -147,7 +147,7 @@ test('Thematic breaks (https://github.github.com/gfm/#example-25)', t => {
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-26)', t => {
-  const actual = normalize(compile('*-*'))
+  const actual = normalize(compile(' *-*'))
   t.is('<p><em>-</em></p>', actual)
 })
 
@@ -207,27 +207,29 @@ test('ATX headings (https://github.github.com/gfm/#example-36)', t => {
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-37)', t => {
-  const actual = normalize(compile('#                  foo'))
+  const actual = normalize(
+    compile('#                  foo                     ')
+  )
   t.is('<h1>foo</h1>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-38)', t => {
-  const actual = normalize(compile('### foo\n## foo\n# foo'))
+  const actual = normalize(compile(' ### foo\n  ## foo\n   # foo'))
   t.is('<h3>foo</h3><h2>foo</h2><h1>foo</h1>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-39)', t => {
-  const actual = normalize(compile('# foo'))
+  const actual = normalize(compile('    # foo'))
   t.is('<pre><code># foo</code></pre>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-40)', t => {
-  const actual = normalize(compile('foo\n# bar'))
+  const actual = normalize(compile('foo\n    # bar'))
   t.is('<p>foo# bar</p>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-41)', t => {
-  const actual = normalize(compile('## foo ##\n###   bar    ###'))
+  const actual = normalize(compile('## foo ##\n  ###   bar    ###'))
   t.is('<h2>foo</h2><h3>bar</h3>', actual)
 })
 
@@ -239,7 +241,7 @@ test('ATX headings (https://github.github.com/gfm/#example-42)', t => {
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-43)', t => {
-  const actual = normalize(compile('### foo ###'))
+  const actual = normalize(compile('### foo ###     '))
   t.is('<h3>foo</h3>', actual)
 })
 
@@ -269,7 +271,7 @@ test('ATX headings (https://github.github.com/gfm/#example-48)', t => {
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-49)', t => {
-  const actual = normalize(compile('##\n#\n### ###'))
+  const actual = normalize(compile('## \n#\n### ###'))
   t.is('<h2></h2><h1></h1><h3></h3>', actual)
 })
 
@@ -291,22 +293,24 @@ test('Setext headings (https://github.github.com/gfm/#example-52)', t => {
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-53)', t => {
-  const actual = normalize(compile('Foo\n---\n\nFoo\n-----\n\nFoo\n==='))
+  const actual = normalize(
+    compile('   Foo\n---\n\n  Foo\n-----\n\n  Foo\n  ===')
+  )
   t.is('<h2>Foo</h2><h2>Foo</h2><h1>Foo</h1>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-54)', t => {
-  const actual = normalize(compile('Foo\n---\n\nFoo\n---'))
+  const actual = normalize(compile('    Foo\n    ---\n\n    Foo\n---'))
   t.is('<pre><code>Foo---Foo</code></pre><hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-55)', t => {
-  const actual = normalize(compile('Foo\n----'))
+  const actual = normalize(compile('Foo\n   ----      '))
   t.is('<h2>Foo</h2>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-56)', t => {
-  const actual = normalize(compile('Foo\n---'))
+  const actual = normalize(compile('Foo\n    ---'))
   t.is('<p>Foo---</p>', actual)
 })
 
@@ -316,7 +320,7 @@ test('Setext headings (https://github.github.com/gfm/#example-57)', t => {
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-58)', t => {
-  const actual = normalize(compile('Foo\n-----'))
+  const actual = normalize(compile('Foo  \n-----'))
   t.is('<h2>Foo</h2>', actual)
 })
 
@@ -376,7 +380,7 @@ test('Setext headings (https://github.github.com/gfm/#example-68)', t => {
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-69)', t => {
-  const actual = normalize(compile('foo\n---'))
+  const actual = normalize(compile('    foo\n---'))
   t.is('<pre><code>foo</code></pre><hr>', actual)
 })
 
@@ -411,48 +415,50 @@ test('Setext headings (https://github.github.com/gfm/#example-75)', t => {
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-76)', t => {
-  const actual = normalize(compile('a simple\nindented code block'))
-  t.is('<pre><code>a simpleindented code block</code></pre>', actual)
+  const actual = normalize(compile('    a simple\n      indented code block'))
+  t.is('<pre><code>a simple  indented code block</code></pre>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-77)', t => {
-  const actual = normalize(compile('- foo\n\nbar'))
+  const actual = normalize(compile('  - foo\n\n    bar'))
   t.is('<ul><li><p>foo</p><p>bar</p></li></ul>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-78)', t => {
-  const actual = normalize(compile('1.  foo\n\n- bar'))
+  const actual = normalize(compile('1.  foo\n\n    - bar'))
   t.is('<ol><li><p>foo</p><ul><li>bar</li></ul></li></ol>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-79)', t => {
-  const actual = normalize(compile('<a/>\n*hi*\n\n- one'))
+  const actual = normalize(compile('    <a/>\n    *hi*\n\n    - one'))
   t.is('<pre><code>&lt;a/&gt;*hi*- one</code></pre>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-80)', t => {
-  const actual = normalize(compile('chunk1\n\nchunk2\n\n\n\nchunk3'))
+  const actual = normalize(
+    compile('    chunk1\n\n    chunk2\n  \n \n \n    chunk3')
+  )
   t.is('<pre><code>chunk1chunk2chunk3</code></pre>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-81)', t => {
-  const actual = normalize(compile('chunk1\n\nchunk2'))
-  t.is('<pre><code>chunk1chunk2</code></pre>', actual)
+  const actual = normalize(compile('    chunk1\n      \n      chunk2'))
+  t.is('<pre><code>chunk1    chunk2</code></pre>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-82)', t => {
-  const actual = normalize(compile('Foo\nbar\n'))
+  const actual = normalize(compile('Foo\n    bar\n'))
   t.is('<p>Foobar</p>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-83)', t => {
-  const actual = normalize(compile('foo\nbar'))
+  const actual = normalize(compile('    foo\nbar'))
   t.is('<pre><code>foo</code></pre><p>bar</p>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-84)', t => {
   const actual = normalize(
-    compile('# Heading\nfoo\nHeading\n------\nfoo\n----')
+    compile('# Heading\n    foo\nHeading\n------\n    foo\n----')
   )
   t.is(
     '<h1>Heading</h1><pre><code>foo</code></pre><h2>Heading</h2><pre><code>foo</code></pre><hr>',
@@ -461,28 +467,28 @@ test('Indented code blocks (https://github.github.com/gfm/#example-84)', t => {
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-85)', t => {
-  const actual = normalize(compile('foo\nbar'))
+  const actual = normalize(compile('        foo\n    bar'))
   t.is('<pre><code>    foobar</code></pre>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-86)', t => {
-  const actual = normalize(compile('\n\nfoo\n\n'))
+  const actual = normalize(compile('\n    \n    foo\n    \n'))
   t.is('<pre><code>foo</code></pre>', actual)
 })
 
 test('Indented code blocks (https://github.github.com/gfm/#example-87)', t => {
-  const actual = normalize(compile('foo'))
-  t.is('<pre><code>foo</code></pre>', actual)
+  const actual = normalize(compile('    foo  '))
+  t.is('<pre><code>foo  </code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-88)', t => {
-  const actual = normalize(compile('```\n<\n>\n```'))
-  t.is('<pre><code>&lt;&gt;</code></pre>', actual)
+  const actual = normalize(compile('```\n<\n >\n```'))
+  t.is('<pre><code>&lt; &gt;</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-89)', t => {
-  const actual = normalize(compile('~~~\n<\n>\n~~~'))
-  t.is('<pre><code>&lt;&gt;</code></pre>', actual)
+  const actual = normalize(compile('~~~\n<\n >\n~~~'))
+  t.is('<pre><code>&lt; &gt;</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-90)', t => {
@@ -526,8 +532,8 @@ test('Fenced code blocks (https://github.github.com/gfm/#example-97)', t => {
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-98)', t => {
-  const actual = normalize(compile('```\n\n\n```'))
-  t.is('<pre><code></code></pre>', actual)
+  const actual = normalize(compile('```\n\n  \n```'))
+  t.is('<pre><code>  </code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-99)', t => {
@@ -536,38 +542,38 @@ test('Fenced code blocks (https://github.github.com/gfm/#example-99)', t => {
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-100)', t => {
-  const actual = normalize(compile('```\naaa\naaa\n```'))
+  const actual = normalize(compile(' ```\n aaa\naaa\n```'))
   t.is('<pre><code>aaaaaa</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-101)', t => {
-  const actual = normalize(compile('```\naaa\naaa\naaa\n```'))
+  const actual = normalize(compile('  ```\naaa\n  aaa\naaa\n  ```'))
   t.is('<pre><code>aaaaaaaaa</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-102)', t => {
-  const actual = normalize(compile('```\naaa\naaa\naaa\n```'))
-  t.is('<pre><code>aaaaaaaaa</code></pre>', actual)
+  const actual = normalize(compile('   ```\n   aaa\n    aaa\n  aaa\n   ```'))
+  t.is('<pre><code>aaa aaaaaa</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-103)', t => {
-  const actual = normalize(compile('```\naaa\n```'))
+  const actual = normalize(compile('    ```\n    aaa\n    ```'))
   t.is('<pre><code>```aaa```</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-104)', t => {
-  const actual = normalize(compile('```\naaa\n```'))
+  const actual = normalize(compile('```\naaa\n  ```'))
   t.is('<pre><code>aaa</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-105)', t => {
-  const actual = normalize(compile('```\naaa\n```'))
+  const actual = normalize(compile('   ```\naaa\n  ```'))
   t.is('<pre><code>aaa</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-106)', t => {
-  const actual = normalize(compile('```\naaa\n```'))
-  t.is('<pre><code>aaa```</code></pre>', actual)
+  const actual = normalize(compile('```\naaa\n    ```'))
+  t.is('<pre><code>aaa    ```</code></pre>', actual)
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-107)', t => {
@@ -591,9 +597,9 @@ test('Fenced code blocks (https://github.github.com/gfm/#example-110)', t => {
 })
 
 test('Fenced code blocks (https://github.github.com/gfm/#example-111)', t => {
-  const actual = normalize(compile('```ruby\ndef foo(x)\nreturn 3\nend\n```'))
+  const actual = normalize(compile('```ruby\ndef foo(x)\n  return 3\nend\n```'))
   t.is(
-    '<pre><code class="language-ruby">def foo(x)return 3end</code></pre>',
+    '<pre><code class="language-ruby">def foo(x)  return 3end</code></pre>',
     actual
   )
 })
@@ -601,11 +607,11 @@ test('Fenced code blocks (https://github.github.com/gfm/#example-111)', t => {
 test('Fenced code blocks (https://github.github.com/gfm/#example-112)', t => {
   const actual = normalize(
     compile(
-      '~~~~    ruby startline=3 $%@#$\ndef foo(x)\nreturn 3\nend\n~~~~~~~'
+      '~~~~    ruby startline=3 $%@#$\ndef foo(x)\n  return 3\nend\n~~~~~~~'
     )
   )
   t.is(
-    '<pre><code class="language-ruby">def foo(x)return 3end</code></pre>',
+    '<pre><code class="language-ruby">def foo(x)  return 3end</code></pre>',
     actual
   )
 })
@@ -639,14 +645,19 @@ test('HTML blocks (https://github.github.com/gfm/#example-116)', t => {
 
 test('HTML blocks (https://github.github.com/gfm/#example-117)', t => {
   const actual = normalize(
-    compile('<table>\n<tr>\n<td>\nhi\n</td>\n</tr>\n</table>\n\nokay.')
+    compile(
+      '<table>\n  <tr>\n    <td>\n           hi\n    </td>\n  </tr>\n</table>\n\nokay.'
+    )
   )
-  t.is('<table><tr><td>hi</td></tr></table><p>okay.</p>', actual)
+  t.is(
+    '<table>  <tr>    <td>           hi    </td>  </tr></table><p>okay.</p>',
+    actual
+  )
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-118)', t => {
-  const actual = normalize(compile('<div>\n*hello*\n<foo><a>'))
-  t.is('<div>*hello*<foo><a></a></foo></div>', actual)
+  const actual = normalize(compile(' <div>\n  *hello*\n         <foo><a>'))
+  t.is(' <div>  *hello*         <foo><a></a></foo></div>', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-119)', t => {
@@ -660,13 +671,13 @@ test('HTML blocks (https://github.github.com/gfm/#example-120)', t => {
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-121)', t => {
-  const actual = normalize(compile('<div id="foo"\nclass="bar">\n</div>'))
-  t.is('<div id="foo" class="bar"></div>', actual)
+  const actual = normalize(compile('<div id="foo"\n  class="bar">\n</div>'))
+  t.is('<div id="foo"  class="bar"></div>', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-122)', t => {
-  const actual = normalize(compile('<div id="foo" class="bar\nbaz">\n</div>'))
-  t.is('<div id="foo" class="barbaz"></div>', actual)
+  const actual = normalize(compile('<div id="foo" class="bar\n  baz">\n</div>'))
+  t.is('<div id="foo" class="bar baz"></div>', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-123)', t => {
@@ -766,18 +777,18 @@ test('HTML blocks (https://github.github.com/gfm/#example-138)', t => {
 test('HTML blocks (https://github.github.com/gfm/#example-139)', t => {
   const actual = normalize(
     compile(
-      '<style\ntype="text/css">\nh1 {color:red;}\n\np {color:blue;}\n</style>\nokay'
+      '<style\n  type="text/css">\nh1 {color:red;}\n\np {color:blue;}\n</style>\nokay'
     )
   )
   t.is(
-    '<style type="text/css">h1 {color:red;}p {color:blue;}</style><p>okay</p>',
+    '<style  type="text/css">h1 {color:red;}p {color:blue;}</style><p>okay</p>',
     actual
   )
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-140)', t => {
-  const actual = compile('<style\ntype="text/css">\n\nfoo')
-  t.is('<style\ntype="text/css">\n\nfoo', actual)
+  const actual = compile('<style\n  type="text/css">\n\nfoo')
+  t.is('<style\n  type="text/css">\n\nfoo', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-141)', t => {
@@ -806,13 +817,13 @@ test('HTML blocks (https://github.github.com/gfm/#example-145)', t => {
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-146)', t => {
-  const actual = normalize(compile('<!-- Foo\n\nbar\nbaz -->\nokay'))
-  t.is('<!-- Foobarbaz --><p>okay</p>', actual)
+  const actual = normalize(compile('<!-- Foo\n\nbar\n   baz -->\nokay'))
+  t.is('<!-- Foobar   baz --><p>okay</p>', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-147)', t => {
-  const actual = normalize(compile("<?php\n\necho '>';\n\n?>\nokay"))
-  t.is("<?phpecho '>';?><p>okay</p>", actual)
+  const actual = normalize(compile("<?php\n\n  echo '>';\n\n?>\nokay"))
+  t.is("<?php  echo '>';?><p>okay</p>", actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-148)', t => {
@@ -823,23 +834,23 @@ test('HTML blocks (https://github.github.com/gfm/#example-148)', t => {
 test('HTML blocks (https://github.github.com/gfm/#example-149)', t => {
   const actual = normalize(
     compile(
-      '<![CDATA[\nfunction matchwo(a,b)\n{\nif (a < b && a < 0) then {\nreturn 1;\n\n} else {\n\nreturn 0;\n}\n}\n]]>\nokay'
+      '<![CDATA[\nfunction matchwo(a,b)\n{\n  if (a < b && a < 0) then {\n    return 1;\n\n  } else {\n\n    return 0;\n  }\n}\n]]>\nokay'
     )
   )
   t.is(
-    '<![CDATA[function matchwo(a,b){if (a < b && a < 0) then {return 1;} else {return 0;}}]]><p>okay</p>',
+    '<![CDATA[function matchwo(a,b){  if (a < b && a < 0) then {    return 1;  } else {    return 0;  }}]]><p>okay</p>',
     actual
   )
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-150)', t => {
-  const actual = normalize(compile('<!-- foo -->\n\n<!-- foo -->'))
-  t.is('<!-- foo --><pre><code>&lt;!-- foo --&gt;</code></pre>', actual)
+  const actual = normalize(compile('  <!-- foo -->\n\n    <!-- foo -->'))
+  t.is('  <!-- foo --><pre><code>&lt;!-- foo --&gt;</code></pre>', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-151)', t => {
-  const actual = normalize(compile('<div>\n\n<div>'))
-  t.is('<div><pre><code>&lt;div&gt;</code></pre></div>', actual)
+  const actual = normalize(compile('  <div>\n\n    <div>'))
+  t.is('  <div><pre><code>&lt;div&gt;</code></pre></div>', actual)
 })
 
 test('HTML blocks (https://github.github.com/gfm/#example-152)', t => {
@@ -876,10 +887,12 @@ test('HTML blocks (https://github.github.com/gfm/#example-157)', t => {
 
 test('HTML blocks (https://github.github.com/gfm/#example-158)', t => {
   const actual = normalize(
-    compile('<table>\n\n<tr>\n\n<td>\nHi\n</td>\n\n</tr>\n\n</table>')
+    compile(
+      '<table>\n\n  <tr>\n\n    <td>\n      Hi\n    </td>\n\n  </tr>\n\n</table>'
+    )
   )
   t.is(
-    '<table><tr><pre><code>&lt;td&gt;Hi&lt;/td&gt;</code></pre></tr></table>',
+    '<table>  <tr><pre><code>&lt;td&gt;  Hi&lt;/td&gt;</code></pre>  </tr></table>',
     actual
   )
 })
@@ -890,7 +903,9 @@ test('Link reference definitions (https://github.github.com/gfm/#example-159)', 
 })
 
 test('Link reference definitions (https://github.github.com/gfm/#example-160)', t => {
-  const actual = normalize(compile("[foo]:\n/url\n'the title'\n\n[foo]"))
+  const actual = normalize(
+    compile("   [foo]: \n      /url  \n           'the title'  \n\n[foo]")
+  )
   t.is('<p><a href="/url" title="the title">foo</a></p>', actual)
 })
 
@@ -986,7 +1001,7 @@ test('Link reference definitions (https://github.github.com/gfm/#example-175)', 
 })
 
 test('Link reference definitions (https://github.github.com/gfm/#example-176)', t => {
-  const actual = normalize(compile('[foo]: /url "title"\n\n[foo]'))
+  const actual = normalize(compile('    [foo]: /url "title"\n\n[foo]'))
   t.is(
     '<pre><code>[foo]: /url &quot;title&quot;</code></pre><p>[foo]</p>',
     actual
@@ -1014,7 +1029,7 @@ test('Link reference definitions (https://github.github.com/gfm/#example-179)', 
 test('Link reference definitions (https://github.github.com/gfm/#example-180)', t => {
   const actual = normalize(
     compile(
-      '[foo]: /foo-url "foo"\n[bar]: /bar-url\n"bar"\n[baz]: /baz-url\n\n[foo],\n[bar],\n[baz]'
+      '[foo]: /foo-url "foo"\n[bar]: /bar-url\n  "bar"\n[baz]: /baz-url\n\n[foo],\n[bar],\n[baz]'
     )
   )
   t.is(
@@ -1044,32 +1059,34 @@ test('Paragraphs (https://github.github.com/gfm/#example-184)', t => {
 })
 
 test('Paragraphs (https://github.github.com/gfm/#example-185)', t => {
-  const actual = normalize(compile('aaa\nbbb'))
+  const actual = normalize(compile('  aaa\n bbb'))
   t.is('<p>aaabbb</p>', actual)
 })
 
 test('Paragraphs (https://github.github.com/gfm/#example-186)', t => {
-  const actual = normalize(compile('aaa\nbbb\nccc'))
+  const actual = normalize(
+    compile('aaa\n             bbb\n                                       ccc')
+  )
   t.is('<p>aaabbbccc</p>', actual)
 })
 
 test('Paragraphs (https://github.github.com/gfm/#example-187)', t => {
-  const actual = normalize(compile('aaa\nbbb'))
+  const actual = normalize(compile('   aaa\nbbb'))
   t.is('<p>aaabbb</p>', actual)
 })
 
 test('Paragraphs (https://github.github.com/gfm/#example-188)', t => {
-  const actual = normalize(compile('aaa\nbbb'))
+  const actual = normalize(compile('    aaa\nbbb'))
   t.is('<pre><code>aaa</code></pre><p>bbb</p>', actual)
 })
 
 test('Paragraphs (https://github.github.com/gfm/#example-189)', t => {
-  const actual = normalize(compile('aaa\nbbb'))
+  const actual = normalize(compile('aaa     \nbbb     '))
   t.is('<p>aaa<br>bbb</p>', actual)
 })
 
 test('Blank lines (https://github.github.com/gfm/#example-190)', t => {
-  const actual = normalize(compile('\n\naaa\n\n\n# aaa\n\n'))
+  const actual = normalize(compile('  \n\naaa\n  \n\n# aaa\n\n  '))
   t.is('<p>aaa</p><h1>aaa</h1>', actual)
 })
 
@@ -1157,12 +1174,12 @@ test('Block quotes (https://github.github.com/gfm/#example-200)', t => {
 })
 
 test('Block quotes (https://github.github.com/gfm/#example-201)', t => {
-  const actual = normalize(compile('> # Foo\n> bar\n> baz'))
+  const actual = normalize(compile('   > # Foo\n   > bar\n > baz'))
   t.is('<blockquote><h1>Foo</h1><p>barbaz</p></blockquote>', actual)
 })
 
 test('Block quotes (https://github.github.com/gfm/#example-202)', t => {
-  const actual = normalize(compile('> # Foo\n> bar\n> baz'))
+  const actual = normalize(compile('    > # Foo\n    > bar\n    > baz'))
   t.is('<pre><code>&gt; # Foo&gt; bar&gt; baz</code></pre>', actual)
 })
 
@@ -1190,7 +1207,7 @@ test('Block quotes (https://github.github.com/gfm/#example-206)', t => {
 })
 
 test('Block quotes (https://github.github.com/gfm/#example-207)', t => {
-  const actual = normalize(compile('>     foo\nbar'))
+  const actual = normalize(compile('>     foo\n    bar'))
   t.is(
     '<blockquote><pre><code>foo</code></pre></blockquote><pre><code>bar</code></pre>',
     actual
@@ -1206,7 +1223,7 @@ test('Block quotes (https://github.github.com/gfm/#example-208)', t => {
 })
 
 test('Block quotes (https://github.github.com/gfm/#example-209)', t => {
-  const actual = normalize(compile('> foo\n- bar'))
+  const actual = normalize(compile('> foo\n    - bar'))
   t.is('<blockquote><p>foo- bar</p></blockquote>', actual)
 })
 
@@ -1216,12 +1233,12 @@ test('Block quotes (https://github.github.com/gfm/#example-210)', t => {
 })
 
 test('Block quotes (https://github.github.com/gfm/#example-211)', t => {
-  const actual = normalize(compile('>\n>\n>'))
+  const actual = normalize(compile('>\n>  \n> '))
   t.is('<blockquote></blockquote>', actual)
 })
 
 test('Block quotes (https://github.github.com/gfm/#example-212)', t => {
-  const actual = normalize(compile('>\n> foo\n>'))
+  const actual = normalize(compile('>\n> foo\n>  '))
   t.is('<blockquote><p>foo</p></blockquote>', actual)
 })
 
@@ -1297,7 +1314,9 @@ test('Block quotes (https://github.github.com/gfm/#example-223)', t => {
 
 test('List items (https://github.github.com/gfm/#example-224)', t => {
   const actual = normalize(
-    compile('A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.')
+    compile(
+      'A paragraph\nwith two lines.\n\n    indented code\n\n> A block quote.'
+    )
   )
   t.is(
     '<p>A paragraphwith two lines.</p><pre><code>indented code</code></pre><blockquote><p>A block quote.</p></blockquote>',
@@ -1308,7 +1327,7 @@ test('List items (https://github.github.com/gfm/#example-224)', t => {
 test('List items (https://github.github.com/gfm/#example-225)', t => {
   const actual = normalize(
     compile(
-      '1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.'
+      '1.  A paragraph\n    with two lines.\n\n        indented code\n\n    > A block quote.'
     )
   )
   t.is(
@@ -1318,27 +1337,27 @@ test('List items (https://github.github.com/gfm/#example-225)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-226)', t => {
-  const actual = normalize(compile('- one\n\ntwo'))
+  const actual = normalize(compile('- one\n\n two'))
   t.is('<ul><li>one</li></ul><p>two</p>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-227)', t => {
-  const actual = normalize(compile('- one\n\ntwo'))
+  const actual = normalize(compile('- one\n\n  two'))
   t.is('<ul><li><p>one</p><p>two</p></li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-228)', t => {
-  const actual = normalize(compile('-    one\n\ntwo'))
+  const actual = normalize(compile(' -    one\n\n     two'))
   t.is('<ul><li>one</li></ul><pre><code> two</code></pre>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-229)', t => {
-  const actual = normalize(compile('-    one\n\ntwo'))
+  const actual = normalize(compile(' -    one\n\n      two'))
   t.is('<ul><li><p>one</p><p>two</p></li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-230)', t => {
-  const actual = normalize(compile('> > 1.  one\n>>\n>>     two'))
+  const actual = normalize(compile('   > > 1.  one\n>>\n>>     two'))
   t.is(
     '<blockquote><blockquote><ol><li><p>one</p><p>two</p></li></ol></blockquote></blockquote>',
     actual
@@ -1346,7 +1365,7 @@ test('List items (https://github.github.com/gfm/#example-230)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-231)', t => {
-  const actual = normalize(compile('>>- one\n>>\n>  > two'))
+  const actual = normalize(compile('>>- one\n>>\n  >  > two'))
   t.is(
     '<blockquote><blockquote><ul><li>one</li></ul><p>two</p></blockquote></blockquote>',
     actual
@@ -1359,12 +1378,14 @@ test('List items (https://github.github.com/gfm/#example-232)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-233)', t => {
-  const actual = normalize(compile('- foo\n\n\nbar'))
+  const actual = normalize(compile('- foo\n\n\n  bar'))
   t.is('<ul><li><p>foo</p><p>bar</p></li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-234)', t => {
-  const actual = normalize(compile('1.  foo\n\n```\nbar\n```\n\nbaz\n\n> bam'))
+  const actual = normalize(
+    compile('1.  foo\n\n    ```\n    bar\n    ```\n\n    baz\n\n    > bam')
+  )
   t.is(
     '<ol><li><p>foo</p><pre><code>bar</code></pre><p>baz</p><blockquote><p>bam</p></blockquote></li></ol>',
     actual
@@ -1372,7 +1393,7 @@ test('List items (https://github.github.com/gfm/#example-234)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-235)', t => {
-  const actual = normalize(compile('- Foo\n\nbar\n\n\nbaz'))
+  const actual = normalize(compile('- Foo\n\n      bar\n\n\n      baz'))
   t.is('<ul><li><p>Foo</p><pre><code>barbaz</code></pre></li></ul>', actual)
 })
 
@@ -1402,12 +1423,12 @@ test('List items (https://github.github.com/gfm/#example-240)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-241)', t => {
-  const actual = normalize(compile('- foo\n\nbar'))
+  const actual = normalize(compile('- foo\n\n      bar'))
   t.is('<ul><li><p>foo</p><pre><code>bar</code></pre></li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-242)', t => {
-  const actual = normalize(compile('10.  foo\n\nbar'))
+  const actual = normalize(compile('  10.  foo\n\n           bar'))
   t.is(
     '<ol start="10"><li><p>foo</p><pre><code>bar</code></pre></li></ol>',
     actual
@@ -1415,7 +1436,9 @@ test('List items (https://github.github.com/gfm/#example-242)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-243)', t => {
-  const actual = normalize(compile('indented code\n\nparagraph\n\nmore code'))
+  const actual = normalize(
+    compile('    indented code\n\nparagraph\n\n    more code')
+  )
   t.is(
     '<pre><code>indented code</code></pre><p>paragraph</p><pre><code>more code</code></pre>',
     actual
@@ -1424,7 +1447,7 @@ test('List items (https://github.github.com/gfm/#example-243)', t => {
 
 test('List items (https://github.github.com/gfm/#example-244)', t => {
   const actual = normalize(
-    compile('1.     indented code\n\nparagraph\n\nmore code')
+    compile('1.     indented code\n\n   paragraph\n\n       more code')
   )
   t.is(
     '<ol><li><pre><code>indented code</code></pre><p>paragraph</p><pre><code>more code</code></pre></li></ol>',
@@ -1434,7 +1457,7 @@ test('List items (https://github.github.com/gfm/#example-244)', t => {
 
 test('List items (https://github.github.com/gfm/#example-245)', t => {
   const actual = normalize(
-    compile('1.      indented code\n\nparagraph\n\nmore code')
+    compile('1.      indented code\n\n   paragraph\n\n       more code')
   )
   t.is(
     '<ol><li><pre><code> indented code</code></pre><p>paragraph</p><pre><code>more code</code></pre></li></ol>',
@@ -1443,22 +1466,24 @@ test('List items (https://github.github.com/gfm/#example-245)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-246)', t => {
-  const actual = normalize(compile('foo\n\nbar'))
+  const actual = normalize(compile('   foo\n\nbar'))
   t.is('<p>foo</p><p>bar</p>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-247)', t => {
-  const actual = normalize(compile('-    foo\n\nbar'))
+  const actual = normalize(compile('-    foo\n\n  bar'))
   t.is('<ul><li>foo</li></ul><p>bar</p>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-248)', t => {
-  const actual = normalize(compile('-  foo\n\nbar'))
+  const actual = normalize(compile('-  foo\n\n   bar'))
   t.is('<ul><li><p>foo</p><p>bar</p></li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-249)', t => {
-  const actual = normalize(compile('-\nfoo\n-\n```\nbar\n```\n-\nbaz'))
+  const actual = normalize(
+    compile('-\n  foo\n-\n  ```\n  bar\n  ```\n-\n      baz')
+  )
   t.is(
     '<ul><li>foo</li><li><pre><code>bar</code></pre></li><li><pre><code>baz</code></pre></li></ul>',
     actual
@@ -1466,12 +1491,12 @@ test('List items (https://github.github.com/gfm/#example-249)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-250)', t => {
-  const actual = normalize(compile('-\nfoo'))
+  const actual = normalize(compile('-   \n  foo'))
   t.is('<ul><li>foo</li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-251)', t => {
-  const actual = normalize(compile('-\n\nfoo'))
+  const actual = normalize(compile('-\n\n  foo'))
   t.is('<ul><li></li></ul><p>foo</p>', actual)
 })
 
@@ -1481,7 +1506,7 @@ test('List items (https://github.github.com/gfm/#example-252)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-253)', t => {
-  const actual = normalize(compile('- foo\n-\n- bar'))
+  const actual = normalize(compile('- foo\n-   \n- bar'))
   t.is('<ul><li>foo</li><li></li><li>bar</li></ul>', actual)
 })
 
@@ -1503,7 +1528,7 @@ test('List items (https://github.github.com/gfm/#example-256)', t => {
 test('List items (https://github.github.com/gfm/#example-257)', t => {
   const actual = normalize(
     compile(
-      '1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.'
+      ' 1.  A paragraph\n     with two lines.\n\n         indented code\n\n     > A block quote.'
     )
   )
   t.is(
@@ -1515,7 +1540,7 @@ test('List items (https://github.github.com/gfm/#example-257)', t => {
 test('List items (https://github.github.com/gfm/#example-258)', t => {
   const actual = normalize(
     compile(
-      '1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.'
+      '  1.  A paragraph\n      with two lines.\n\n          indented code\n\n      > A block quote.'
     )
   )
   t.is(
@@ -1527,7 +1552,7 @@ test('List items (https://github.github.com/gfm/#example-258)', t => {
 test('List items (https://github.github.com/gfm/#example-259)', t => {
   const actual = normalize(
     compile(
-      '1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.'
+      '   1.  A paragraph\n       with two lines.\n\n           indented code\n\n       > A block quote.'
     )
   )
   t.is(
@@ -1539,11 +1564,11 @@ test('List items (https://github.github.com/gfm/#example-259)', t => {
 test('List items (https://github.github.com/gfm/#example-260)', t => {
   const actual = normalize(
     compile(
-      '1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.'
+      '    1.  A paragraph\n        with two lines.\n\n            indented code\n\n        > A block quote.'
     )
   )
   t.is(
-    '<pre><code>1.  A paragraphwith two lines.indented code&gt; A block quote.</code></pre>',
+    '<pre><code>1.  A paragraph    with two lines.        indented code    &gt; A block quote.</code></pre>',
     actual
   )
 })
@@ -1551,7 +1576,7 @@ test('List items (https://github.github.com/gfm/#example-260)', t => {
 test('List items (https://github.github.com/gfm/#example-261)', t => {
   const actual = normalize(
     compile(
-      '1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.'
+      '  1.  A paragraph\nwith two lines.\n\n          indented code\n\n      > A block quote.'
     )
   )
   t.is(
@@ -1561,7 +1586,7 @@ test('List items (https://github.github.com/gfm/#example-261)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-262)', t => {
-  const actual = normalize(compile('1.  A paragraph\nwith two lines.'))
+  const actual = normalize(compile('  1.  A paragraph\n    with two lines.'))
   t.is('<ol><li>A paragraphwith two lines.</li></ol>', actual)
 })
 
@@ -1582,7 +1607,7 @@ test('List items (https://github.github.com/gfm/#example-264)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-265)', t => {
-  const actual = normalize(compile('- foo\n- bar\n- baz\n- boo'))
+  const actual = normalize(compile('- foo\n  - bar\n    - baz\n      - boo'))
   t.is(
     '<ul><li>foo<ul><li>bar<ul><li>baz<ul><li>boo</li></ul></li></ul></li></ul></li></ul>',
     actual
@@ -1590,17 +1615,17 @@ test('List items (https://github.github.com/gfm/#example-265)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-266)', t => {
-  const actual = normalize(compile('- foo\n- bar\n- baz\n- boo'))
+  const actual = normalize(compile('- foo\n - bar\n  - baz\n   - boo'))
   t.is('<ul><li>foo</li><li>bar</li><li>baz</li><li>boo</li></ul>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-267)', t => {
-  const actual = normalize(compile('10) foo\n- bar'))
+  const actual = normalize(compile('10) foo\n    - bar'))
   t.is('<ol start="10"><li>foo<ul><li>bar</li></ul></li></ol>', actual)
 })
 
 test('List items (https://github.github.com/gfm/#example-268)', t => {
-  const actual = normalize(compile('10) foo\n- bar'))
+  const actual = normalize(compile('10) foo\n   - bar'))
   t.is('<ol start="10"><li>foo</li></ol><ul><li>bar</li></ul>', actual)
 })
 
@@ -1618,7 +1643,7 @@ test('List items (https://github.github.com/gfm/#example-270)', t => {
 })
 
 test('List items (https://github.github.com/gfm/#example-271)', t => {
-  const actual = normalize(compile('- # Foo\n- Bar\n---\nbaz'))
+  const actual = normalize(compile('- # Foo\n- Bar\n  ---\n  baz'))
   t.is('<ul><li><h1>Foo</h1></li><li><h2>Bar</h2>baz</li></ul>', actual)
 })
 
@@ -1632,7 +1657,7 @@ test('Task list items (extension) (https://github.github.com/gfm/#example-272)',
 
 test('Task list items (extension) (https://github.github.com/gfm/#example-273)', t => {
   const actual = normalize(
-    compile('- [x] foo\n- [ ] bar\n- [x] baz\n- [ ] bim')
+    compile('- [x] foo\n  - [ ] bar\n  - [x] baz\n- [ ] bim')
   )
   t.is(
     '<ul><li><input checked="" disabled="" type="checkbox"> foo<ul><li><input disabled="" type="checkbox"> bar</li><li><input checked="" disabled="" type="checkbox"> baz</li></ul></li><li><input disabled="" type="checkbox"> bim</li></ul>',
@@ -1691,7 +1716,7 @@ test('Lists (https://github.github.com/gfm/#example-279)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-280)', t => {
-  const actual = normalize(compile('- foo\n- bar\n- baz\n\n\nbim'))
+  const actual = normalize(compile('- foo\n  - bar\n    - baz\n\n\n      bim'))
   t.is(
     '<ul><li>foo<ul><li>bar<ul><li><p>baz</p><p>bim</p></li></ul></li></ul></li></ul>',
     actual
@@ -1708,7 +1733,7 @@ test('Lists (https://github.github.com/gfm/#example-281)', t => {
 
 test('Lists (https://github.github.com/gfm/#example-282)', t => {
   const actual = normalize(
-    compile('-   foo\n\nnotcode\n\n-   foo\n\n<!-- -->\n\ncode')
+    compile('-   foo\n\n    notcode\n\n-   foo\n\n<!-- -->\n\n    code')
   )
   t.is(
     '<ul><li><p>foo</p><p>notcode</p></li><li><p>foo</p></li></ul><!-- --><pre><code>code</code></pre>',
@@ -1718,7 +1743,7 @@ test('Lists (https://github.github.com/gfm/#example-282)', t => {
 
 test('Lists (https://github.github.com/gfm/#example-283)', t => {
   const actual = normalize(
-    compile('- a\n- b\n- c\n- d\n- e\n- f\n- g\n- h\n- i')
+    compile('- a\n - b\n  - c\n   - d\n    - e\n   - f\n  - g\n - h\n- i')
   )
   t.is(
     '<ul><li>a</li><li>b</li><li>c</li><li>d</li><li>e</li><li>f</li><li>g</li><li>h</li><li>i</li></ul>',
@@ -1727,7 +1752,7 @@ test('Lists (https://github.github.com/gfm/#example-283)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-284)', t => {
-  const actual = normalize(compile('1. a\n\n2. b\n\n3. c'))
+  const actual = normalize(compile('1. a\n\n  2. b\n\n    3. c'))
   t.is('<ol><li><p>a</p></li><li><p>b</p></li><li><p>c</p></li></ol>', actual)
 })
 
@@ -1742,7 +1767,7 @@ test('Lists (https://github.github.com/gfm/#example-286)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-287)', t => {
-  const actual = normalize(compile('- a\n- b\n\nc\n- d'))
+  const actual = normalize(compile('- a\n- b\n\n  c\n- d'))
   t.is(
     '<ul><li><p>a</p></li><li><p>b</p><p>c</p></li><li><p>d</p></li></ul>',
     actual
@@ -1750,12 +1775,12 @@ test('Lists (https://github.github.com/gfm/#example-287)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-288)', t => {
-  const actual = normalize(compile('- a\n- b\n\n[ref]: /url\n- d'))
+  const actual = normalize(compile('- a\n- b\n\n  [ref]: /url\n- d'))
   t.is('<ul><li><p>a</p></li><li><p>b</p></li><li><p>d</p></li></ul>', actual)
 })
 
 test('Lists (https://github.github.com/gfm/#example-289)', t => {
-  const actual = normalize(compile('- a\n- ```\nb\n\n\n```\n- c'))
+  const actual = normalize(compile('- a\n- ```\n  b\n\n\n  ```\n- c'))
   t.is(
     '<ul><li>a</li><li><pre><code>b</code></pre></li><li>c</li></ul>',
     actual
@@ -1763,7 +1788,7 @@ test('Lists (https://github.github.com/gfm/#example-289)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-290)', t => {
-  const actual = normalize(compile('- a\n- b\n\nc\n- d'))
+  const actual = normalize(compile('- a\n  - b\n\n    c\n- d'))
   t.is(
     '<ul><li>a<ul><li><p>b</p><p>c</p></li></ul></li><li>d</li></ul>',
     actual
@@ -1771,12 +1796,12 @@ test('Lists (https://github.github.com/gfm/#example-290)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-291)', t => {
-  const actual = normalize(compile('* a\n> b\n>\n* c'))
+  const actual = normalize(compile('* a\n  > b\n  >\n* c'))
   t.is('<ul><li>a<blockquote><p>b</p></blockquote></li><li>c</li></ul>', actual)
 })
 
 test('Lists (https://github.github.com/gfm/#example-292)', t => {
-  const actual = normalize(compile('- a\n> b\n```\nc\n```\n- d'))
+  const actual = normalize(compile('- a\n  > b\n  ```\n  c\n  ```\n- d'))
   t.is(
     '<ul><li>a<blockquote><p>b</p></blockquote><pre><code>c</code></pre></li><li>d</li></ul>',
     actual
@@ -1789,22 +1814,22 @@ test('Lists (https://github.github.com/gfm/#example-293)', t => {
 })
 
 test('Lists (https://github.github.com/gfm/#example-294)', t => {
-  const actual = normalize(compile('- a\n- b'))
+  const actual = normalize(compile('- a\n  - b'))
   t.is('<ul><li>a<ul><li>b</li></ul></li></ul>', actual)
 })
 
 test('Lists (https://github.github.com/gfm/#example-295)', t => {
-  const actual = normalize(compile('1. ```\nfoo\n```\n\nbar'))
+  const actual = normalize(compile('1. ```\n   foo\n   ```\n\n   bar'))
   t.is('<ol><li><pre><code>foo</code></pre><p>bar</p></li></ol>', actual)
 })
 
 test('Lists (https://github.github.com/gfm/#example-296)', t => {
-  const actual = normalize(compile('* foo\n* bar\n\nbaz'))
+  const actual = normalize(compile('* foo\n  * bar\n\n  baz'))
   t.is('<ul><li><p>foo</p><ul><li>bar</li></ul><p>baz</p></li></ul>', actual)
 })
 
 test('Lists (https://github.github.com/gfm/#example-297)', t => {
-  const actual = normalize(compile('- a\n- b\n- c\n\n- d\n- e\n- f'))
+  const actual = normalize(compile('- a\n  - b\n  - c\n\n- d\n  - e\n  - f'))
   t.is(
     '<ul><li><p>a</p><ul><li>b</li><li>c</li></ul></li><li><p>d</p><ul><li>e</li><li>f</li></ul></li></ul>',
     actual
@@ -1854,7 +1879,7 @@ test('Backslash escapes (https://github.github.com/gfm/#example-304)', t => {
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-305)', t => {
-  const actual = normalize(compile('[]'))
+  const actual = normalize(compile('    []'))
   t.is('<pre><code>[]</code></pre>', actual)
 })
 
@@ -1958,7 +1983,7 @@ test('Entity and numeric character references (https://github.github.com/gfm/#ex
 })
 
 test('Entity and numeric character references (https://github.github.com/gfm/#example-323)', t => {
-  const actual = normalize(compile('f&ouml;f&ouml;'))
+  const actual = normalize(compile('    f&ouml;f&ouml;'))
   t.is('<pre><code>f&amp;ouml;f&amp;ouml;</code></pre>', actual)
 })
 
@@ -1983,7 +2008,7 @@ test('Code spans (https://github.github.com/gfm/#example-327)', t => {
 })
 
 test('Code spans (https://github.github.com/gfm/#example-328)', t => {
-  const actual = normalize(compile('`foo   bar\nbaz`'))
+  const actual = normalize(compile('`foo   bar\n  baz`'))
   t.is('<p><code>foo bar baz</code></p>', actual)
 })
 
@@ -2849,7 +2874,7 @@ test('Links (https://github.github.com/gfm/#example-493)', t => {
 })
 
 test('Links (https://github.github.com/gfm/#example-494)', t => {
-  const actual = normalize(compile('[link](   /uri\n"title"  )'))
+  const actual = normalize(compile('[link](   /uri\n  "title"  )'))
   t.is('<p><a href="/uri" title="title">link</a></p>', actual)
 })
 
@@ -3027,7 +3052,7 @@ test('Links (https://github.github.com/gfm/#example-524)', t => {
 })
 
 test('Links (https://github.github.com/gfm/#example-525)', t => {
-  const actual = normalize(compile('[Foo\nbar]: /url\n\n[Baz][Foo bar]'))
+  const actual = normalize(compile('[Foo\n  bar]: /url\n\n[Baz][Foo bar]'))
   t.is('<p><a href="/url">Baz</a></p>', actual)
 })
 
@@ -3084,7 +3109,7 @@ test('Links (https://github.github.com/gfm/#example-535)', t => {
 })
 
 test('Links (https://github.github.com/gfm/#example-536)', t => {
-  const actual = normalize(compile('[\n]\n\n[\n]: /uri'))
+  const actual = normalize(compile('[\n ]\n\n[\n ]: /uri'))
   t.is('<p>[]</p><p>[]: /uri</p>', actual)
 })
 
@@ -3106,7 +3131,7 @@ test('Links (https://github.github.com/gfm/#example-539)', t => {
 })
 
 test('Links (https://github.github.com/gfm/#example-540)', t => {
-  const actual = normalize(compile('[foo]\n[]\n\n[foo]: /url "title"'))
+  const actual = normalize(compile('[foo] \n[]\n\n[foo]: /url "title"'))
   t.is('<p><a href="/url" title="title">foo</a>[]</p>', actual)
 })
 
@@ -3289,7 +3314,7 @@ test('Images (https://github.github.com/gfm/#example-570)', t => {
 })
 
 test('Images (https://github.github.com/gfm/#example-571)', t => {
-  const actual = normalize(compile('![foo]\n[]\n\n[foo]: /url "title"'))
+  const actual = normalize(compile('![foo] \n[]\n\n[foo]: /url "title"'))
   t.is('<p><img src="/url" alt="foo" title="title">[]</p>', actual)
 })
 
@@ -3662,17 +3687,17 @@ test('Raw HTML (https://github.github.com/gfm/#example-628)', t => {
 test('Disallowed Raw HTML (extension) (https://github.github.com/gfm/#example-629)', t => {
   const actual = normalize(
     compile(
-      '<strong> <title> <style> <em>\n\n<blockquote>\n<xmp> is disallowed.  <XMP> is also disallowed.\n</blockquote>'
+      '<strong> <title> <style> <em>\n\n<blockquote>\n  <xmp> is disallowed.  <XMP> is also disallowed.\n</blockquote>'
     )
   )
   t.is(
-    '<p><strong> &lt;title> &lt;style> <em></em></strong></p><blockquote>&lt;xmp> is disallowed.  &lt;XMP> is also disallowed.</blockquote>',
+    '<p><strong> &lt;title> &lt;style> <em></em></strong></p><blockquote>  &lt;xmp> is disallowed.  &lt;XMP> is also disallowed.</blockquote>',
     actual
   )
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-630)', t => {
-  const actual = normalize(compile('foo\nbaz'))
+  const actual = normalize(compile('foo  \nbaz'))
   t.is('<p>foo<br>baz</p>', actual)
 })
 
@@ -3682,22 +3707,22 @@ test('Hard line breaks (https://github.github.com/gfm/#example-631)', t => {
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-632)', t => {
-  const actual = normalize(compile('foo\nbaz'))
+  const actual = normalize(compile('foo       \nbaz'))
   t.is('<p>foo<br>baz</p>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-633)', t => {
-  const actual = normalize(compile('foo\nbar'))
+  const actual = normalize(compile('foo  \n     bar'))
   t.is('<p>foo<br>bar</p>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-634)', t => {
-  const actual = normalize(compile('foo\\nbar'))
+  const actual = normalize(compile('foo\\n     bar'))
   t.is('<p>foo<br>bar</p>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-635)', t => {
-  const actual = normalize(compile('*foo\nbar*'))
+  const actual = normalize(compile('*foo  \nbar*'))
   t.is('<p><em>foo<br>bar</em></p>', actual)
 })
 
@@ -3707,7 +3732,7 @@ test('Hard line breaks (https://github.github.com/gfm/#example-636)', t => {
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-637)', t => {
-  const actual = normalize(compile('`code\nspan`'))
+  const actual = normalize(compile('`code  \nspan`'))
   t.is('<p><code>code span</code></p>', actual)
 })
 
@@ -3717,8 +3742,8 @@ test('Hard line breaks (https://github.github.com/gfm/#example-638)', t => {
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-639)', t => {
-  const actual = normalize(compile('<a href="foo\nbar">'))
-  t.is('<p><a href="foobar"></a></p>', actual)
+  const actual = normalize(compile('<a href="foo  \nbar">'))
+  t.is('<p><a href="foo  bar"></a></p>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-640)', t => {
@@ -3732,7 +3757,7 @@ test('Hard line breaks (https://github.github.com/gfm/#example-641)', t => {
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-642)', t => {
-  const actual = normalize(compile('foo'))
+  const actual = normalize(compile('foo  '))
   t.is('<p>foo</p>', actual)
 })
 
@@ -3742,7 +3767,7 @@ test('Hard line breaks (https://github.github.com/gfm/#example-643)', t => {
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-644)', t => {
-  const actual = normalize(compile('### foo'))
+  const actual = normalize(compile('### foo  '))
   t.is('<h3>foo</h3>', actual)
 })
 
@@ -3752,7 +3777,7 @@ test('Soft line breaks (https://github.github.com/gfm/#example-645)', t => {
 })
 
 test('Soft line breaks (https://github.github.com/gfm/#example-646)', t => {
-  const actual = normalize(compile('foo\nbaz'))
+  const actual = normalize(compile('foo \n baz'))
   t.is('<p>foobaz</p>', actual)
 })
 

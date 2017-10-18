@@ -25,7 +25,6 @@ request.get(SPEC_URL, (err, res, text) => {
   if (!err && res.statusCode === 200) {
     // Build tests
     text.split('\n').forEach(line => {
-      line = line.trim()
       if (line.startsWith('```````````````````````````````` example')) {
         state = 1
       } else if (line === '````````````````````````````````') {
