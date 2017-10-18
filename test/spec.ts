@@ -299,7 +299,7 @@ test('ATX headings (https://github.github.com/gfm/#example-34)', t => {
 test('ATX headings (https://github.github.com/gfm/#example-35)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\## foo')
+    compile('\\## foo')
   )
   t.is('<p>## foo</p>', actual)
 })
@@ -307,7 +307,7 @@ test('ATX headings (https://github.github.com/gfm/#example-35)', t => {
 test('ATX headings (https://github.github.com/gfm/#example-36)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('# foo *bar* \*baz\*')
+    compile('# foo *bar* \\*baz\\*')
   )
   t.is('<h1>foo <em>bar</em> *baz*</h1>', actual)
 })
@@ -387,7 +387,7 @@ test('ATX headings (https://github.github.com/gfm/#example-45)', t => {
 test('ATX headings (https://github.github.com/gfm/#example-46)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('### foo \###\n## foo #\##\n# foo \#')
+    compile('### foo \\###\n## foo #\\##\n# foo \\#')
   )
   t.is('<h3>foo ###</h3><h2>foo ###</h2><h1>foo #</h1>', actual)
 })
@@ -493,7 +493,7 @@ test('Setext headings (https://github.github.com/gfm/#example-59)', t => {
   const actual = normalize(
     compile('Foo\\n----')
   )
-  t.is('<h2>Foo</h2>', actual)
+  t.is('<h2>Foo\\</h2>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-60)', t => {
@@ -590,7 +590,7 @@ test('Setext headings (https://github.github.com/gfm/#example-70)', t => {
 test('Setext headings (https://github.github.com/gfm/#example-71)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\> foo\n------')
+    compile('\\> foo\n------')
   )
   t.is('<h2>&gt; foo</h2>', actual)
 })
@@ -622,7 +622,7 @@ test('Setext headings (https://github.github.com/gfm/#example-74)', t => {
 test('Setext headings (https://github.github.com/gfm/#example-75)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('Foo\nbar\n\---\nbaz')
+    compile('Foo\nbar\n\\---\nbaz')
   )
   t.is('<p>Foobar---baz</p>', actual)
 })
@@ -1336,7 +1336,7 @@ test('Link reference definitions (https://github.github.com/gfm/#example-160)', 
 test('Link reference definitions (https://github.github.com/gfm/#example-161)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[Foo*bar\]]:my_(url) \'title (with parens)\'\n\n[Foo*bar\]]')
+    compile('[Foo*bar\\]]:my_(url) \'title (with parens)\'\n\n[Foo*bar\\]]')
   )
   t.is(
     '<p><a href="my_(url)" title="title (with parens)">Foo*bar]</a></p>',
@@ -1387,7 +1387,7 @@ test('Link reference definitions (https://github.github.com/gfm/#example-166)', 
 test('Link reference definitions (https://github.github.com/gfm/#example-167)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[foo]: /url\bar\*baz "foo\"bar\baz"\n\n[foo]')
+    compile('[foo]: /url\bar\\*baz "foo\"bar\baz"\n\n[foo]')
   )
   t.is(
     '<p><a href="/url%5Cbar*baz" title="foo&quot;bar\baz">foo</a></p>',
@@ -1613,7 +1613,7 @@ test('Tables (extension) (https://github.github.com/gfm/#example-192)', t => {
 test('Tables (extension) (https://github.github.com/gfm/#example-193)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('| f\|oo  |\n| ------ |\n| b `\|` az |\n| b **\|** im |')
+    compile('| f\\|oo  |\n| ------ |\n| b `\\|` az |\n| b **\\|** im |')
   )
   t.is(
     '<table><thead><tr><th>f|oo</th></tr></thead><tbody><tr><td>b <code>|</code> az</td></tr><tr><td>b <strong>|</strong> im</td></tr></tbody></table>',
@@ -2602,23 +2602,23 @@ test('Inlines (https://github.github.com/gfm/#example-298)', t => {
 test('Backslash escapes (https://github.github.com/gfm/#example-299)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~')
+    compile('\\!\"\\#\\$\\%\\&\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\]\\^\\_\\`\\{\\|\\}\\~')
   )
-  t.is("<p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[]^_`{|}~</p>", actual)
+  t.is("<p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~</p>", actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-300)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\	\A\a\ \\\φ\«')
+    compile('\\	\\A\\a\\ \\\\\φ\\«')
   )
-  t.is('<p>	Aa \\φ«</p>', actual)
+  t.is('<p>\\	\\A\\a\\ \\\\φ\\«</p>', actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-301)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\*not emphasized*\n\<br/> not a tag\n\[not a link](/foo)\n\`not code`\n1\. not a list\n\* not a list\n\# not a heading\n\[foo]: /url "not a reference"')
+    compile('\\*not emphasized*\n\\<br/> not a tag\n\\[not a link](/foo)\n\\`not code`\n1\\. not a list\n\\* not a list\n\\# not a heading\n\\[foo]: /url "not a reference"')
   )
   t.is(
     '<p>*not emphasized*&lt;br/&gt; not a tag[not a link](/foo)`not code`1. not a list* not a list# not a heading[foo]: /url &quot;not a reference&quot;</p>',
@@ -2629,9 +2629,9 @@ test('Backslash escapes (https://github.github.com/gfm/#example-301)', t => {
 test('Backslash escapes (https://github.github.com/gfm/#example-302)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\\*emphasis*')
+    compile('\\\*emphasis*')
   )
-  t.is('<p><em>emphasis</em></p>', actual)
+  t.is('<p>\\<em>emphasis</em></p>', actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-303)', t => {
@@ -2645,34 +2645,34 @@ test('Backslash escapes (https://github.github.com/gfm/#example-303)', t => {
 test('Backslash escapes (https://github.github.com/gfm/#example-304)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('`` \[\` ``')
+    compile('`` \\[\\` ``')
   )
-  t.is('<p><code>[`</code></p>', actual)
+  t.is('<p><code>\\[\\`</code></p>', actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-305)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('    \[\]')
+    compile('    \\[\\]')
   )
-  t.is('<pre><code>[]</code></pre>', actual)
+  t.is('<pre><code>\\[\\]</code></pre>', actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-306)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('~~~\n\[\]\n~~~')
+    compile('~~~\n\\[\\]\n~~~')
   )
-  t.is('<pre><code>[]</code></pre>', actual)
+  t.is('<pre><code>\\[\\]</code></pre>', actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-307)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('<http://example.com?find=\*>')
+    compile('<http://example.com?find=\\*>')
   )
   t.is(
-    '<p><a href="http://example.com?find=%5C*">http://example.com?find=*</a></p>',
+    '<p><a href="http://example.com?find=%5C*">http://example.com?find=\\*</a></p>',
     actual
   )
 })
@@ -2680,15 +2680,15 @@ test('Backslash escapes (https://github.github.com/gfm/#example-307)', t => {
 test('Backslash escapes (https://github.github.com/gfm/#example-308)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('<a href="/bar\/)">')
+    compile('<a href="/bar\\/)">')
   )
-  t.is('<a href="/bar/)"></a>', actual)
+  t.is('<a href="/bar\\/)"></a>', actual)
 })
 
 test('Backslash escapes (https://github.github.com/gfm/#example-309)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[foo](/bar\* "ti\*tle")')
+    compile('[foo](/bar\\* "ti\\*tle")')
   )
   t.is('<p><a href="/bar*" title="ti*tle">foo</a></p>', actual)
 })
@@ -2696,7 +2696,7 @@ test('Backslash escapes (https://github.github.com/gfm/#example-309)', t => {
 test('Backslash escapes (https://github.github.com/gfm/#example-310)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[foo]\n\n[foo]: /bar\* "ti\*tle"')
+    compile('[foo]\n\n[foo]: /bar\\* "ti\\*tle"')
   )
   t.is('<p><a href="/bar*" title="ti*tle">foo</a></p>', actual)
 })
@@ -2704,7 +2704,7 @@ test('Backslash escapes (https://github.github.com/gfm/#example-310)', t => {
 test('Backslash escapes (https://github.github.com/gfm/#example-311)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('``` foo\+bar\nfoo\n```')
+    compile('``` foo\\+bar\nfoo\n```')
   )
   t.is('<pre><code class="language-foo+bar">foo</code></pre>', actual)
 })
@@ -2867,9 +2867,9 @@ test('Code spans (https://github.github.com/gfm/#example-330)', t => {
 test('Code spans (https://github.github.com/gfm/#example-331)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('`foo\`bar`')
+    compile('`foo\\`bar`')
   )
-  t.is('<p><code>foo</code>bar`</p>', actual)
+  t.is('<p><code>foo\\</code>bar`</p>', actual)
 })
 
 test('Code spans (https://github.github.com/gfm/#example-332)', t => {
@@ -3620,7 +3620,7 @@ test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-423)'
 test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-424)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('foo *\**')
+    compile('foo *\\**')
   )
   t.is('<p>foo <em>*</em></p>', actual)
 })
@@ -3644,7 +3644,7 @@ test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-426)'
 test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-427)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('foo **\***')
+    compile('foo **\\***')
   )
   t.is('<p>foo <strong>*</strong></p>', actual)
 })
@@ -3716,7 +3716,7 @@ test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-435)'
 test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-436)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('foo _\__')
+    compile('foo _\\__')
   )
   t.is('<p>foo <em>_</em></p>', actual)
 })
@@ -3740,7 +3740,7 @@ test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-438)'
 test('Emphasis and strong emphasis (https://github.github.com/gfm/#example-439)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('foo __\___')
+    compile('foo __\\___')
   )
   t.is('<p>foo <strong>_</strong></p>', actual)
 })
@@ -4074,7 +4074,7 @@ test('Links (https://github.github.com/gfm/#example-479)', t => {
 test('Links (https://github.github.com/gfm/#example-480)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[link](\(foo\))')
+    compile('[link](\\(foo\\))')
   )
   t.is('<p><a href="(foo)">link</a></p>', actual)
 })
@@ -4090,7 +4090,7 @@ test('Links (https://github.github.com/gfm/#example-481)', t => {
 test('Links (https://github.github.com/gfm/#example-482)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[link](foo\(and\(bar\))')
+    compile('[link](foo\\(and\\(bar\\))')
   )
   t.is('<p><a href="foo(and(bar)">link</a></p>', actual)
 })
@@ -4106,7 +4106,7 @@ test('Links (https://github.github.com/gfm/#example-483)', t => {
 test('Links (https://github.github.com/gfm/#example-484)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[link](foo\)\:)')
+    compile('[link](foo\\)\\:)')
   )
   t.is('<p><a href="foo):">link</a></p>', actual)
 })
@@ -4235,7 +4235,7 @@ test('Links (https://github.github.com/gfm/#example-498)', t => {
 test('Links (https://github.github.com/gfm/#example-499)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[link \[bar](/uri)')
+    compile('[link \\[bar](/uri)')
   )
   t.is('<p><a href="/uri">link [bar</a></p>', actual)
 })
@@ -4353,7 +4353,7 @@ test('Links (https://github.github.com/gfm/#example-512)', t => {
 test('Links (https://github.github.com/gfm/#example-513)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[link \[bar][ref]\n\n[ref]: /uri')
+    compile('[link \\[bar][ref]\n\n[ref]: /uri')
   )
   t.is('<p><a href="/uri">link [bar</a></p>', actual)
 })
@@ -4490,7 +4490,7 @@ test('Links (https://github.github.com/gfm/#example-528)', t => {
 test('Links (https://github.github.com/gfm/#example-529)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[bar][foo\!]\n\n[foo!]: /url')
+    compile('[bar][foo\\!]\n\n[foo!]: /url')
   )
   t.is('<p>[bar][foo!]</p>', actual)
 })
@@ -4522,7 +4522,7 @@ test('Links (https://github.github.com/gfm/#example-532)', t => {
 test('Links (https://github.github.com/gfm/#example-533)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[foo][ref\[]\n\n[ref\[]: /uri')
+    compile('[foo][ref\\[]\n\n[ref\\[]: /uri')
   )
   t.is('<p><a href="/uri">foo</a></p>', actual)
 })
@@ -4530,9 +4530,9 @@ test('Links (https://github.github.com/gfm/#example-533)', t => {
 test('Links (https://github.github.com/gfm/#example-534)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('[bar\\]: /uri\n\n[bar\\]')
+    compile('[bar\\\]: /uri\n\n[bar\\\]')
   )
-  t.is('<p><a href="/uri">bar</a></p>', actual)
+  t.is('<p><a href="/uri">bar\\</a></p>', actual)
 })
 
 test('Links (https://github.github.com/gfm/#example-535)', t => {
@@ -4634,7 +4634,7 @@ test('Links (https://github.github.com/gfm/#example-546)', t => {
 test('Links (https://github.github.com/gfm/#example-547)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\[foo]\n\n[foo]: /url "title"')
+    compile('\\[foo]\n\n[foo]: /url "title"')
   )
   t.is('<p>[foo]</p>', actual)
 })
@@ -4878,7 +4878,7 @@ test('Images (https://github.github.com/gfm/#example-575)', t => {
 test('Images (https://github.github.com/gfm/#example-576)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('!\[foo]\n\n[foo]: /url "title"')
+    compile('!\\[foo]\n\n[foo]: /url "title"')
   )
   t.is('<p>![foo]</p>', actual)
 })
@@ -4886,7 +4886,7 @@ test('Images (https://github.github.com/gfm/#example-576)', t => {
 test('Images (https://github.github.com/gfm/#example-577)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('\![foo]\n\n[foo]: /url "title"')
+    compile('\\![foo]\n\n[foo]: /url "title"')
   )
   t.is('<p>!<a href="/url" title="title">foo</a></p>', actual)
 })
@@ -4975,10 +4975,10 @@ test('Autolinks (https://github.github.com/gfm/#example-586)', t => {
 test('Autolinks (https://github.github.com/gfm/#example-587)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('<http://example.com/\[\>')
+    compile('<http://example.com/\\[\\>')
   )
   t.is(
-    '<p><a href="http://example.com/%5C%5B%5C">http://example.com/[</a></p>',
+    '<p><a href="http://example.com/%5C%5B%5C">http://example.com/\\[\\</a></p>',
     actual
   )
 })
@@ -5008,7 +5008,7 @@ test('Autolinks (https://github.github.com/gfm/#example-589)', t => {
 test('Autolinks (https://github.github.com/gfm/#example-590)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('<foo\+@bar.example.com>')
+    compile('<foo\\+@bar.example.com>')
   )
   t.is('<p>&lt;foo+@bar.example.com&gt;</p>', actual)
 })
@@ -5336,9 +5336,9 @@ test('Raw HTML (https://github.github.com/gfm/#example-626)', t => {
 test('Raw HTML (https://github.github.com/gfm/#example-627)', t => {
   // prettier-ignore
   const actual = normalize(
-    compile('foo <a href="\*">')
+    compile('foo <a href="\\*">')
   )
-  t.is('<p>foo <a href="*"></a></p>', actual)
+  t.is('<p>foo <a href="\\*"></a></p>', actual)
 })
 
 test('Raw HTML (https://github.github.com/gfm/#example-628)', t => {
@@ -5429,7 +5429,7 @@ test('Hard line breaks (https://github.github.com/gfm/#example-638)', t => {
   const actual = normalize(
     compile('`code\\nspan`')
   )
-  t.is('<p><code>code span</code></p>', actual)
+  t.is('<p><code>code\\ span</code></p>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-639)', t => {
@@ -5453,7 +5453,7 @@ test('Hard line breaks (https://github.github.com/gfm/#example-641)', t => {
   const actual = normalize(
     compile('foo\'')
   )
-  t.is('<p>foo</p>', actual)
+  t.is('<p>foo\\</p>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-642)', t => {
@@ -5469,7 +5469,7 @@ test('Hard line breaks (https://github.github.com/gfm/#example-643)', t => {
   const actual = normalize(
     compile('### foo\'')
   )
-  t.is('<h3>foo</h3>', actual)
+  t.is('<h3>foo\\</h3>', actual)
 })
 
 test('Hard line breaks (https://github.github.com/gfm/#example-644)', t => {

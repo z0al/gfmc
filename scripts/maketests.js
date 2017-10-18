@@ -96,8 +96,7 @@ request.get(SPEC_URL, (err, res, text) => {
     writeFileSync(resolve(__dirname, '..', 'test', 'spec.ts'), tmpl, 'utf8')
     console.log('Done!')
   } else {
-    console.log(`Failed to download specification file`)
-    console.log(`code (${res.statusCode})`)
+    console.log(`Failed to download specification file:`)
     console.log(err)
   }
 })
@@ -105,6 +104,8 @@ request.get(SPEC_URL, (err, res, text) => {
 const stringEscape = str => {
   return (
     str
+      // replace \ with \\ when suitable
+      .replace(/\\([^'"brftvn\\])/g, '\\\\$1')
       // escape (')
       .replace(/(([^\\])(')|\\$)/g, "$2\\'")
       // escape octal literals
