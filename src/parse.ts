@@ -20,6 +20,7 @@ export class Parser {
           break
       }
 
+      // Consume next available token
       tok = this.nextToken()
     }
 

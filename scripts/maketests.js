@@ -17,6 +17,10 @@ const tests = []
 const SPEC_URL =
   'https://raw.githubusercontent.com/github/cmark/master/test/spec.txt'
 
+const normalize = str => {
+  return minify(str).replace(/\\n/g, '')
+}
+
 request.get(SPEC_URL, (err, res, text) => {
   if (!err && res.statusCode === 200) {
     // Build tests
@@ -62,14 +66,18 @@ import { minify } from 'html-minifier'
 
 // Ours
 import compile from '../src'
+
+// Return normalized form of HTML which ignores insignificant output
+// differences
+const normalize = ${normalize.toString()}
 `
     // Generate tests
     tests.forEach(cas => {
       let html = cas['html']
       let md = `compile('${stringEscape(cas['markdown'])}')`
       try {
-        html = minify(html)
-        md = `minify(${md})`
+        html = normalize(html)
+        md = `normalize(${md})`
       } catch (__) {
         // garbage in, garbage out
       }

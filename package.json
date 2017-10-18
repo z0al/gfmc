@@ -10,6 +10,7 @@
   "browser": "dist/gfmc.umd.js",
   "repository": "https://github.com/ahmed-taj/gfmc",
   "devDependencies": {
+    "@types/html-minifier": "^1.1.30",
     "@types/node": "^8.0.36",
     "ava": "^0.22.0",
     "html-minifier": "^3.5.5",
