@@ -73,10 +73,10 @@ request.get(SPEC_URL, (err, res, text) => {
     ${tests
       .map(test => {
         let html = test['html']
-        let md = `compile('${stringEscape(test['markdown'])}')`
+        let md = `\n    compile('${stringEscape(test['markdown'])}')`
         try {
           html = normalize(html)
-          md = `normalize(${md})`
+          md = `normalize(${md}\n  )`
         } catch (__) {
           // garbage in, garbage out
         }
@@ -86,6 +86,7 @@ request.get(SPEC_URL, (err, res, text) => {
           )} (https://github.github.com/gfm/#example-${test[
           'example'
         ]})', (t) => {
+            // prettier-ignore
             const actual = ${md}
             t.is('${stringEscape(html)}', actual)
           })`
