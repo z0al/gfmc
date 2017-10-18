@@ -28,7 +28,7 @@ export class BlockScanner {
     // replaced with the REPLACEMENT CHARACTER (U+FFFD).
     //
     // ref: https://github.github.com/gfm/#insecure-characters
-    this.src = src.replace('\u0000', '\uFFFD')
+    this.src = src.replace(/\0/g, '\uFFFD')
 
     // A line ending is a newline (U+000A), a carriage return (U+000D)
     // not followed by a newline, or a carriage return and a following
