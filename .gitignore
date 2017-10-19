@@ -85,3 +85,6 @@ typings/
 
 # Build Output
 dist
+
+# Personal TODO
+TODO.md
