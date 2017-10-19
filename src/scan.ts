@@ -1,9 +1,12 @@
 import * as t from './tokens'
 
-// We can divide blocks into two types: container blocks, which can contain
-// other blocks, and leaf blocks, which cannot.
+// We can think of a document as a sequence of blocks—structural elements like
+// paragraphs, block quotations, lists, headings, rules, and code blocks. Some
+// blocks (like block quotes and list items) contain other blocks; others (like
+// headings and paragraphs) contain inline content—text, links, emphasized
+// text, images, code spans, and so on.
 //
-// ref: https://github.github.com/gfm/#container-blocks-and-leaf-blocks
+// ref: https://github.github.com/gfm/#blocks-and-inlines
 const rules = {
   // ========================================================================
   // >     LEAF BLOCKS                                                      <
@@ -18,7 +21,17 @@ const rules = {
   // indented 0-3 spaces.
   //
   // ref: https://github.github.com/gfm/#atx-heading
-  atx_heading: /^(?: {0,3})([#]{1,6})(?: (.*))?(?:\n|$)/,
+  atx_heading: /^(?: {0,3})([#]{1,6})(?: (.*))?(?=\n|$)/,
+
+  // A setext heading consists of one or more lines of text, each containing at
+  // least one non-whitespace character, with no more than 3 spaces indentation
+  // followed by a setext heading underline. The lines of text must be such
+  // that were they not followed by the setext heading underline, they would be
+  // interpreted as a paragraph: they cannot be interpretable as a code fence,
+  // ATX heading, block quote, thematic break, list item, or HTML block.
+  //
+  // ref: https://github.github.com/gfm/#setext-heading
+  setext_heading: /^((?:(?: {0,3})(?:(?![\*\-\+] |\d+(?:\)|\.) |\s)[^\n]*)\n)+)(?: {0,3})(-{2,}|=+) *(?=\n|$)/,
 
   // A line consisting of 0-3 spaces of indentation, followed by a sequence of
   // three or more matching -, _, or * characters, each followed optionally by
@@ -27,7 +40,7 @@ const rules = {
   // characters may occur in the line
   //
   // ref: https://github.github.com/gfm/#thematic-breaks
-  thematic_break: /^(?: {0,3})([-*_]) *(?:\1 *){2,}(?:\n|$)/
+  thematic_break: /^(?: {0,3})([-*_]) *(?:\1 *){2,}(?=\n|$)/
 }
 
 export class BlockScanner {
@@ -50,10 +63,32 @@ export class BlockScanner {
     while (this.src) {
       let match: RegExpExecArray
 
-      // Blank lines
+      // New line
+      match = /^\n+/.exec(this.src)
+      if (match) {
+        this.tokens.push({
+          type: 'newline'
+        })
+
+        this.eat(match)
+        continue
+      }
+
+      // Thematic break
+      match = rules.thematic_break.exec(this.src)
+      if (match) {
+        this.tokens.push({
+          char: match[1],
+          type: 'thematic_break'
+        } as t.ThematicBreak)
+
+        this.eat(match)
+        continue
+      }
+
+      // ATX heading
       match = rules.atx_heading.exec(this.src)
       if (match) {
-        this.eat(match)
         // Level? 1-6
         const level = match[1].length
         // Text?
@@ -78,19 +113,20 @@ export class BlockScanner {
           type: 'atx_heading'
         } as t.ATXHeading)
 
+        this.eat(match)
         continue
       }
 
-      // Thematic break
-      match = rules.thematic_break.exec(this.src)
+      // Setext heading
+      match = rules.setext_heading.exec(this.src)
       if (match) {
-        this.eat(match)
-
         this.tokens.push({
-          char: match[1],
-          type: 'thematic_break'
-        } as t.ThematicBreak)
+          level: match[2][0] === '=' ? 1 : 2,
+          text: match[1].trim(),
+          type: 'setext_heading'
+        } as t.SetextHeading)
 
+        this.eat(match)
         continue
       }
 

@@ -22,6 +22,17 @@ export class Parser {
           )
           break
 
+        case 'newline':
+          output += '\n'
+          break
+
+        case 'setext_heading':
+          output += this.renderer.setext_heading(
+            (tok as t.SetextHeading).text,
+            (tok as t.SetextHeading).level
+          )
+          break
+
         case 'thematic_break':
           output += this.renderer.thematic_break((tok as t.ThematicBreak).char)
           break

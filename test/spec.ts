@@ -77,7 +77,7 @@ import compile from '../src'
 
 test('Thematic breaks (https://github.github.com/gfm/#example-13)', t => {
   const actual = compile('***\n---\n___')
-  t.is('<hr><hr><hr>', actual)
+  t.is('<hr>\n<hr>\n<hr>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-14)', t => {
@@ -97,7 +97,7 @@ test('Thematic breaks (https://github.github.com/gfm/#example-16)', t => {
 
 test('Thematic breaks (https://github.github.com/gfm/#example-17)', t => {
   const actual = compile(' ***\n  ***\n   ***')
-  t.is('<hr><hr><hr>', actual)
+  t.is('<hr>\n<hr>\n<hr>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-18)', t => {
@@ -157,7 +157,7 @@ test('Thematic breaks (https://github.github.com/gfm/#example-28)', t => {
 
 test('Thematic breaks (https://github.github.com/gfm/#example-29)', t => {
   const actual = compile('Foo\n---\nbar')
-  t.is('<h2>Foo</h2><p>bar</p>', actual)
+  t.is('<h2>Foo</h2>\n<p>bar</p>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-30)', t => {
@@ -176,7 +176,7 @@ test('ATX headings (https://github.github.com/gfm/#example-32)', t => {
   )
 
   t.is(
-    '<h1>foo</h1><h2>foo</h2><h3>foo</h3><h4>foo</h4><h5>foo</h5><h6>foo</h6>',
+    '<h1>foo</h1>\n<h2>foo</h2>\n<h3>foo</h3>\n<h4>foo</h4>\n<h5>foo</h5>\n<h6>foo</h6>',
     actual
   )
 })
@@ -208,7 +208,7 @@ test('ATX headings (https://github.github.com/gfm/#example-37)', t => {
 
 test('ATX headings (https://github.github.com/gfm/#example-38)', t => {
   const actual = compile(' ### foo\n  ## foo\n   # foo')
-  t.is('<h3>foo</h3><h2>foo</h2><h1>foo</h1>', actual)
+  t.is('<h3>foo</h3>\n<h2>foo</h2>\n<h1>foo</h1>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-39)', t => {
@@ -223,14 +223,14 @@ test('ATX headings (https://github.github.com/gfm/#example-40)', t => {
 
 test('ATX headings (https://github.github.com/gfm/#example-41)', t => {
   const actual = compile('## foo ##\n  ###   bar    ###')
-  t.is('<h2>foo</h2><h3>bar</h3>', actual)
+  t.is('<h2>foo</h2>\n<h3>bar</h3>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-42)', t => {
   const actual = compile(
     '# foo ##################################\n##### foo ##'
   )
-  t.is('<h1>foo</h1><h5>foo</h5>', actual)
+  t.is('<h1>foo</h1>\n<h5>foo</h5>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-43)', t => {
@@ -250,22 +250,22 @@ test('ATX headings (https://github.github.com/gfm/#example-45)', t => {
 
 test('ATX headings (https://github.github.com/gfm/#example-46)', t => {
   const actual = compile('### foo \\###\n## foo #\\##\n# foo \\#')
-  t.is('<h3>foo ###</h3><h2>foo ###</h2><h1>foo #</h1>', actual)
+  t.is('<h3>foo ###</h3>\n<h2>foo ###</h2>\n<h1>foo #</h1>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-47)', t => {
   const actual = compile('****\n## foo\n****')
-  t.is('<hr><h2>foo</h2><hr>', actual)
+  t.is('<hr>\n<h2>foo</h2>\n<hr>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-48)', t => {
   const actual = compile('Foo bar\n# baz\nBar foo')
-  t.is('<p>Foo bar</p>\n<h1>baz</h1>\n<p>Bar foo</p>', actual)
+  t.is('<p>Foo bar</p><h1>baz</h1><p>Bar foo</p>', actual)
 })
 
 test('ATX headings (https://github.github.com/gfm/#example-49)', t => {
   const actual = compile('## \n#\n### ###')
-  t.is('<h2></h2><h1></h1><h3></h3>', actual)
+  t.is('<h2></h2>\n<h1></h1>\n<h3></h3>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-50)', t => {
@@ -314,31 +314,31 @@ test('Setext headings (https://github.github.com/gfm/#example-58)', t => {
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-59)', t => {
-  const actual = compile('Foo\\n----')
-  t.is('<h2>Foo\\</h2>', actual)
+  const actual = compile('Foo\n----')
+  t.is('<h2>Foo</h2>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-60)', t => {
   const actual = compile('`Foo\n----\n`\n\n<a title="a lot\n---\nof dashes"/>')
   t.is(
-    '<h2>`Foo</h2>\n<p>`</p>\n<h2>&lt;a title=&quot;a lot</h2>\n<p>of dashes&quot;/&gt;</p>',
+    '<h2>`Foo</h2><p>`</p><h2>&lt;a title=&quot;a lot</h2><p>of dashes&quot;/&gt;</p>',
     actual
   )
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-61)', t => {
   const actual = compile('> Foo\n---')
-  t.is('<blockquote>\n<p>Foo</p>\n</blockquote>\n<hr>', actual)
+  t.is('<blockquote><p>Foo</p></blockquote><hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-62)', t => {
   const actual = compile('> foo\nbar\n===')
-  t.is('<blockquote>\n<p>foo\nbar\n===</p>\n</blockquote>', actual)
+  t.is('<blockquote><p>foo\nbar\n===</p></blockquote>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-63)', t => {
   const actual = compile('- Foo\n---')
-  t.is('<ul>\n<li>Foo</li>\n</ul>\n<hr>', actual)
+  t.is('<ul><li>Foo</li></ul><hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-64)', t => {
@@ -363,7 +363,7 @@ test('Setext headings (https://github.github.com/gfm/#example-67)', t => {
 
 test('Setext headings (https://github.github.com/gfm/#example-68)', t => {
   const actual = compile('- foo\n-----')
-  t.is('<ul>\n<li>foo</li>\n</ul>\n<hr>', actual)
+  t.is('<ul><li>foo</li></ul><hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-69)', t => {
@@ -373,7 +373,7 @@ test('Setext headings (https://github.github.com/gfm/#example-69)', t => {
 
 test('Setext headings (https://github.github.com/gfm/#example-70)', t => {
   const actual = compile('> foo\n-----')
-  t.is('<blockquote>\n<p>foo</p>\n</blockquote>\n<hr>', actual)
+  t.is('<blockquote><p>foo</p></blockquote><hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-71)', t => {
@@ -383,17 +383,17 @@ test('Setext headings (https://github.github.com/gfm/#example-71)', t => {
 
 test('Setext headings (https://github.github.com/gfm/#example-72)', t => {
   const actual = compile('Foo\n\nbar\n---\nbaz')
-  t.is('<p>Foo</p>\n<h2>bar</h2>\n<p>baz</p>', actual)
+  t.is('<p>Foo</p><h2>bar</h2><p>baz</p>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-73)', t => {
   const actual = compile('Foo\nbar\n\n---\n\nbaz')
-  t.is('<p>Foo\nbar</p>\n<hr>\n<p>baz</p>', actual)
+  t.is('<p>Foo\nbar</p><hr><p>baz</p>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-74)', t => {
   const actual = compile('Foo\nbar\n* * *\nbaz')
-  t.is('<p>Foo\nbar</p>\n<hr>\n<p>baz</p>', actual)
+  t.is('<p>Foo\nbar</p><hr><p>baz</p>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-75)', t => {

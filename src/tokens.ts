@@ -13,3 +13,6 @@ export interface ATXHeading extends Token {
   level: number
   text: string
 }
+
+// Setext Heading Token
+export type SetextHeading = ATXHeading
