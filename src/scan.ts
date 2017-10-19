@@ -21,7 +21,7 @@ const rules = {
   // indented 0-3 spaces.
   //
   // ref: https://github.github.com/gfm/#atx-heading
-  atx_heading: /^(?: {0,3})([#]{1,6})(?: (.*))?(?=\n|$)/,
+  atx_heading: /^(?: {0,3})([#]{1,6})(?:(?:(?: (.*))?( #{0,}))|(?: (.*))?)(?=\n|$)/,
 
   // A setext heading consists of one or more lines of text, each containing at
   // least one non-whitespace character, with no more than 3 spaces indentation
@@ -92,24 +92,18 @@ export class BlockScanner {
         // Level? 1-6
         const level = match[1].length
         // Text?
-        let text = (match[2] || '').trim()
+        let text = (match[2] || match[4] || '').trim()
 
-        // Has closing sequence?
+        // Our regex fail in cases when there are spaces after the optional
+        // closing sequence, let's check if it's the case?
         const closed = text.match(/( [#]+)$/)
         if (closed) {
-          text = text.replace(closed[0], '')
-        } else if (text.split('').every(e => e === '#')) {
-          // If the text is pure #s then it's probably something like this:
-          //
-          // ## ###
-          //
-          // In which case we have no text
-          text = ''
+          text = text.replace(closed[0], '').trim()
         }
 
         this.tokens.push({
           level,
-          text: text.trim(),
+          text,
           type: 'atx_heading'
         } as t.ATXHeading)
 
