@@ -94,8 +94,8 @@ export class BlockScanner {
         // Text?
         let text = (match[2] || match[4] || '').trim()
 
-        // Our regex fail in cases when there are spaces after the optional
-        // closing sequence, let's check if it's the case?
+        // Our regex fails when there are spaces after the optional closing
+        // sequence, let's check if it's the case?
         const closed = text.match(/( [#]+)$/)
         if (closed) {
           text = text.replace(closed[0], '').trim()
