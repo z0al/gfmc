@@ -10,14 +10,11 @@
   "browser": "dist/gfmc.umd.js",
   "repository": "https://github.com/ahmed-taj/gfmc",
   "devDependencies": {
-    "@types/html-minifier": "^1.1.30",
     "@types/node": "^8.0.36",
     "ava": "^0.22.0",
-    "html-minifier": "^3.5.5",
     "husky": "^0.14.3",
     "lint-staged": "^4.2.3",
     "prettier": "^1.7.4",
-    "request": "^2.83.0",
     "rollup": "^0.50.0",
     "rollup-plugin-typescript": "^0.8.1",
     "tslint": "^5.7.0",
@@ -28,8 +25,6 @@
     "build": "rollup  -c",
     "format": "prettier --write --no-semi --single-quote './**/*.{ts,js,json}'",
     "lint": "tslint -c tslint.json '{src,test}/**/*.ts' --fix",
-    "maketests": "node scripts/maketests.js",
-    "postmaketests": "npm run format -s",
     "test": "ava dist/*-test.js",
     "precommit": "lint-staged",
     "pretest": "npm run build"
