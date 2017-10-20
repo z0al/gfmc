@@ -36,8 +36,8 @@ export class Scanner {
 
     const lines = this.src.split('\n')
 
-    for (let i = 0; i < lines.length; i++) {
-      let line = lines[i]
+    for (let index = 0; index < lines.length; index++) {
+      let line = lines[index]
 
       // Blank line?
       const isBlank = blank.exec(line)
@@ -55,7 +55,7 @@ export class Scanner {
         if (hasIndent) {
           // TODO
         } else {
-          // Remove spaces
+          // Remove spaces from the beginning only
           line = line.replace(spaces, '')
 
           // ATX heading?
@@ -105,16 +105,16 @@ export class Scanner {
             continue
           }
 
-          if (i === lines.length - 1) {
-            // This is the last line so this is a paragraph
-            if (this.insideSetext) {
-              tokens.push(this.paragraphToken())
-            } else {
+          // Last line?
+          if (index === lines.length - 1) {
+            // If we ain't inside Setext heading then use this line as buffer
+            if (!this.insideSetext) {
               this.buffer = line
-              tokens.push(this.paragraphToken())
             }
+            // It must be paragraph anyway!
+            tokens.push(this.paragraphToken())
           } else {
-            // Assuming Setext heading start
+            // Let's assume Setext heading start and move forward
             this.insideSetext = true
             this.buffer += line + '\n'
           }
@@ -124,17 +124,12 @@ export class Scanner {
     return tokens
   }
   private paragraphToken(): t.Paragraph {
-    const text = this.reset()
-    return { type: 'PARAGRAPH', text: text.trim() }
+    const text = this.reset().trim()
+    return { text, type: 'PARAGRAPH' }
   }
   private headingToken(level: number, atx = false): t.Heading {
-    const text = this.reset()
-    return {
-      atx,
-      level,
-      text: text.trim(),
-      type: 'HEADING'
-    }
+    const text = this.reset().trim()
+    return { atx, level, text, type: 'HEADING' }
   }
 
   private reset(): string {
