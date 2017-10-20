@@ -64,17 +64,11 @@ export class Scanner {
             if (this.insideSetext) {
               tokens.push(this.paragraphToken())
             }
-            // Grap text
-            let text = isATX[2] || ''
+            // Grap the text
             // It may has a closing sequence!
-            text = text.replace(this.ATX_CLOSE, '').trim()
+            this.buffer = (isATX[2] || '').replace(this.ATX_CLOSE, '').trim()
 
-            tokens.push({
-              atx: true,
-              level: isATX[1].length,
-              text,
-              type: 'HEADING'
-            } as t.Heading)
+            tokens.push(this.headingToken(isATX[1].length, true))
 
             // Continue to next line
             continue
@@ -84,8 +78,8 @@ export class Scanner {
           const isThematic = this.THEMATIC_BREAK.exec(line)
           if (isThematic) {
             if (this.insideSetext) {
-              if (/^-+$/.exec(line)) {
-                tokens.push(this.setextToken(2))
+              if (/^-+( |\t)*$/.exec(line)) {
+                tokens.push(this.headingToken(2))
 
                 // Continue to next line
                 continue
@@ -105,7 +99,7 @@ export class Scanner {
           // Closing Setext heading?
           const isSetext = this.SETEXT_CLOSE.exec(line)
           if (isSetext && this.insideSetext) {
-            tokens.push(this.setextToken(line[0] === '=' ? 1 : 2))
+            tokens.push(this.headingToken(line[0] === '=' ? 1 : 2))
 
             // Continue to next line
             continue
@@ -133,10 +127,10 @@ export class Scanner {
     const text = this.reset()
     return { type: 'PARAGRAPH', text: text.trim() }
   }
-  private setextToken(level: number): t.Heading {
+  private headingToken(level: number, atx = false): t.Heading {
     const text = this.reset()
     return {
-      atx: false,
+      atx,
       level,
       text: text.trim(),
       type: 'HEADING'

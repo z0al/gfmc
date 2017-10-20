@@ -137,7 +137,7 @@ test('Thematic breaks (https://github.github.com/gfm/#example-24)', t => {
 
 test('Thematic breaks (https://github.github.com/gfm/#example-25)', t => {
   const actual = compile('_ _ _ _ a\n\na------\n\n---a---')
-  t.is('<p>_ _ _ _ a</p>\n<p>a------</p>\n<p>---a---</p>', actual)
+  t.is('<p>_ _ _ _ a</p><p>a------</p><p>---a---</p>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-26)', t => {
@@ -152,7 +152,7 @@ test('Thematic breaks (https://github.github.com/gfm/#example-27)', t => {
 
 test('Thematic breaks (https://github.github.com/gfm/#example-28)', t => {
   const actual = compile('Foo\n***\nbar')
-  t.is('<p>Foo</p>\n<hr>\n<p>bar</p>', actual)
+  t.is('<p>Foo</p><hr><p>bar</p>', actual)
 })
 
 test('Thematic breaks (https://github.github.com/gfm/#example-29)', t => {
