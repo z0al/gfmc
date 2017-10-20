@@ -8,7 +8,7 @@ const ATX = /^(#{1,6})($| .*)/
 const ATX_CLOSE = /( #+ *$|^#+$)/
 const thematicBreak = /^([-*_]) *(?:\1 *){2,}$/
 
-export class BlockScanner {
+export class Scanner {
   private src: string
 
   constructor(src: string) {
