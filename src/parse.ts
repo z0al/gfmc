@@ -15,26 +15,16 @@ export class Parser {
     while (tok) {
       // Type check
       switch (tok.type) {
-        case 'atx_heading':
-          output += this.renderer.atx_heading(
-            (tok as t.ATXHeading).text,
-            (tok as t.ATXHeading).level
+        case 'HEADING':
+          output += this.renderer.heading(
+            (tok as t.Heading).text,
+            (tok as t.Heading).level,
+            (tok as t.Heading).atx
           )
           break
 
-        case 'newline':
-          output += '\n'
-          break
-
-        case 'setext_heading':
-          output += this.renderer.setext_heading(
-            (tok as t.SetextHeading).text,
-            (tok as t.SetextHeading).level
-          )
-          break
-
-        case 'thematic_break':
-          output += this.renderer.thematic_break((tok as t.ThematicBreak).char)
+        case 'THEMATIC_BREAK':
+          output += this.renderer.thematicBreak((tok as t.ThematicBreak).char)
           break
       }
 

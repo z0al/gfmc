@@ -43,8 +43,15 @@ const rules = {
   thematic_break: /^(?: {0,3})([-*_]) *(?:\1 *){2,}(?=\n|$)/
 }
 
+// Helpers
+const indent = /^( {4,})\S/
+const spaces = /^ */
+const blank = /^( |\t)*$/
+const ATX = /^(#{1,6})($| .*)/
+const ATX_CLOSE = /( #+ *$|^#+$)/
+const thematicBreak = /^([-*_]) *(?:\1 *){2,}$/
+
 export class BlockScanner {
-  private tokens: t.Token[] = []
   private src: string
 
   constructor(src: string) {
@@ -60,86 +67,59 @@ export class BlockScanner {
   }
 
   public scan(): t.Token[] {
-    while (this.src) {
-      let match: RegExpExecArray
+    // Tokens list
+    const tokens: t.Token[] = []
 
-      // New line
-      match = /^\n+/.exec(this.src)
-      if (match) {
-        this.tokens.push({
-          type: 'newline'
-        })
+    for (let line of this.src.split('\n')) {
+      // Blank line?
+      const isBlank = blank.exec(line)
+      if (isBlank) {
+        // TODO
+      } else {
+        // Has indent?
+        const hasIndent = indent.exec(line)
+        if (hasIndent) {
+          // There is open Setext?
+        } else {
+          // Remove spaces
+          line = line.replace(spaces, '')
 
-        this.eat(match)
-        continue
-      }
+          // ATX heading?
+          const isATX = ATX.exec(line)
+          if (isATX) {
+            // Grap text
+            let text = isATX[2] || ''
+            // It may has a closing sequence!
+            text = text.replace(ATX_CLOSE, '').trim()
 
-      // Thematic break
-      match = rules.thematic_break.exec(this.src)
-      if (match) {
-        this.tokens.push({
-          char: match[1],
-          type: 'thematic_break'
-        } as t.ThematicBreak)
+            tokens.push({
+              atx: true,
+              level: isATX[1].length,
+              text,
+              type: 'HEADING'
+            } as t.Heading)
 
-        this.eat(match)
-        continue
-      }
+            // Continue to next line
+            continue
+          }
 
-      // ATX heading
-      match = rules.atx_heading.exec(this.src)
-      if (match) {
-        // Level? 1-6
-        const level = match[1].length
-        // Text?
-        let text = (match[2] || match[4] || '').trim()
+          // Thematic break?
+          const isThematic = thematicBreak.exec(line)
+          if (isThematic) {
+            tokens.push({
+              char: isThematic[1],
+              type: 'THEMATIC_BREAK'
+            } as t.ThematicBreak)
 
-        // Our regex fails when there are spaces after the optional closing
-        // sequence, let's check if it's the case?
-        const closed = text.match(/( [#]+)$/)
-        if (closed) {
-          text = text.replace(closed[0], '').trim()
+            // Continue to next line
+            continue
+          }
         }
-
-        this.tokens.push({
-          level,
-          text,
-          type: 'atx_heading'
-        } as t.ATXHeading)
-
-        this.eat(match)
-        continue
       }
-
-      // Setext heading
-      match = rules.setext_heading.exec(this.src)
-      if (match) {
-        this.tokens.push({
-          level: match[2][0] === '=' ? 1 : 2,
-          text: match[1].trim(),
-          type: 'setext_heading'
-        } as t.SetextHeading)
-
-        this.eat(match)
-        continue
-      }
-
-      // Error?
-      // if (this.src) {
-      //   throw new Error('Infinite loop on byte: ' + this.src.charCodeAt(0))
-      // }
-      break
     }
-    return this.tokens
+    return tokens
   }
-
-  /**
-   * Advances the source string position by eating the matched text
-   *
-   * @param {RegExpExecArray} match
-   * @private
-   */
-  private eat(match: RegExpExecArray) {
-    this.src = this.src.substring(match[0].length)
+  private paragraph(text: string) {
+    return {}
   }
 }

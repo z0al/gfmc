@@ -8,11 +8,9 @@ export interface ThematicBreak extends Token {
   char: string
 }
 
-// ATX Heading token
-export interface ATXHeading extends Token {
-  level: number
+// Heading token
+export interface Heading extends Token {
   text: string
+  level: number
+  atx: boolean
 }
-
-// Setext Heading Token
-export type SetextHeading = ATXHeading
