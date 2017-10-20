@@ -36,3 +36,11 @@ export interface Heading extends Token {
   level: number
   atx: boolean
 }
+
+// A sequence of non-blank lines that cannot be interpreted as other kinds of
+// blocks
+//
+// ref: https://github.github.com/gfm/#paragraphs
+export interface Paragraph extends Token {
+  text: string
+}

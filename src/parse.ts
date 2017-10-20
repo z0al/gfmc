@@ -23,6 +23,10 @@ export class Parser {
           )
           break
 
+        case 'PARAGRAPH':
+          output += this.renderer.paragraph((tok as t.Paragraph).text)
+          break
+
         case 'THEMATIC_BREAK':
           output += this.renderer.thematicBreak((tok as t.ThematicBreak).char)
           break
