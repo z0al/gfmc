@@ -8,7 +8,7 @@ JavaScript pure implementation of [GitHub Flavored Markdown](https://github.gith
 
 ## Why?
 
-- ✅ 💯 Specification compliance
+- ✅ %100 Specification compliance
 - 🚫 No dependencies
 - 🚀 Works in Node.js, and Browser
 
@@ -23,6 +23,10 @@ console.log(gfm(markdown))
 // =>
 // <h1>This is title</h1>
 ```
+
+## Options
+
+TODO
 
 ## Progress
 
