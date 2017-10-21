@@ -13,6 +13,12 @@ JavaScript pure implementation of [GitHub Flavored Markdown](https://github.gith
 - 🚫 No dependencies
 - 🚀 Works in Node.js, and Browser
 
+## Installation
+
+```sh
+$ npm add --save gfmc
+```
+
 ## Usage
 
 ```javascript
@@ -62,6 +68,10 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/ahmed-taj/gfmc/releases).
 
 ## License
 
