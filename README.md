@@ -1,3 +1,7 @@
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/yF8xMRYKxBs3t9VeMWabeRrx/ahmed-taj/gfmc'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/yF8xMRYKxBs3t9VeMWabeRrx/ahmed-taj/gfmc.svg' />
+</a>
+
 # GFM Compiler
 
 Specification compliance [GitHub Flavored Markdown](https://github.github.com/gfm) (GFM) compiler
