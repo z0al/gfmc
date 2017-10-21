@@ -36,7 +36,13 @@ console.log(gfm(markdown))
 
 ## Options
 
-TODO
+```typescript
+gfm(src: string, options: Object)
+```
+
+| Option            | Description                                                                           |
+| :---------------- | :------------------------------------------------------------------------------------ |
+| renderer {Object} | A custom Renderer to be used by the Parser (default: [HTMLRenderer](./src/render.ts)) |
 
 ## Progress
 
