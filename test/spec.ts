@@ -15,7 +15,7 @@ import compile from '../src'
 
 test('Tabs (https://github.github.com/gfm/#example-1)', t => {
   const actual = compile('\tfoo\tbaz\t\tbim')
-  t.is('<pre><code>foo	baz\t\tbim\n</code></pre>', actual)
+  t.is('<pre><code>foo\tbaz\t\tbim\n</code></pre>', actual)
 })
 
 test('Tabs (https://github.github.com/gfm/#example-2)', t => {
@@ -25,7 +25,7 @@ test('Tabs (https://github.github.com/gfm/#example-2)', t => {
 
 test('Tabs (https://github.github.com/gfm/#example-3)', t => {
   const actual = compile('    a\ta\n    ὐ\ta')
-  t.is('<pre><code>a	a\nὐ\ta\n</code></pre>', actual)
+  t.is('<pre><code>a\ta\nὐ\ta\n</code></pre>', actual)
 })
 
 test('Tabs (https://github.github.com/gfm/#example-4)', t => {
@@ -306,7 +306,7 @@ test('Setext headings (https://github.github.com/gfm/#example-53)', t => {
 
 test('Setext headings (https://github.github.com/gfm/#example-54)', t => {
   const actual = compile('    Foo\n    ---\n\n    Foo\n---')
-  t.is('<pre><code>Foo\n---\n\nFoo\n</code></pre>\n<hr>', actual)
+  t.is('<pre><code>Foo\n---\n\nFoo\n</code></pre<hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-55)', t => {
@@ -384,7 +384,7 @@ test('Setext headings (https://github.github.com/gfm/#example-68)', t => {
 
 test('Setext headings (https://github.github.com/gfm/#example-69)', t => {
   const actual = compile('    foo\n---')
-  t.is('<pre><code>foo\n</code></pre>\n<hr>', actual)
+  t.is('<pre><code>foo\n</code></pre><hr>', actual)
 })
 
 test('Setext headings (https://github.github.com/gfm/#example-70)', t => {
@@ -417,75 +417,75 @@ test('Setext headings (https://github.github.com/gfm/#example-75)', t => {
   t.is('<p>Foo\nbar\n---\nbaz</p>', actual)
 })
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-76)', t => {
-//   const actual = compile('    a simple\n      indented code block')
-//   t.is('<pre><code>a simple\n  indented code block\n</code></pre>', actual)
-// })
+// ====================================================================
+// >  Indented code blocks
+// ====================================================================
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-77)', t => {
-//   const actual = compile('  - foo\n\n    bar')
-//   t.is('<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-76)', t => {
+  const actual = compile('    a simple\n      indented code block')
+  t.is('<pre><code>a simple\n  indented code block\n</code></pre>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-78)', t => {
-//   const actual = compile('1.  foo\n\n    - bar')
-//   t.is(
-//     '<ol>\n<li>\n<p>foo</p>\n<ul>\n<li>bar</li>\n</ul>\n</li>\n</ol>',
-//     actual
-//   )
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-77)', t => {
+  const actual = compile('  - foo\n\n    bar')
+  t.is('<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-79)', t => {
-//   const actual = compile('    <a/>\n    *hi*\n\n    - one')
-//   t.is('<pre><code>&lt;a/&gt;\n*hi*\n\n- one\n</code></pre>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-78)', t => {
+  const actual = compile('1.  foo\n\n    - bar')
+  t.is(
+    '<ol>\n<li>\n<p>foo</p>\n<ul>\n<li>bar</li>\n</ul>\n</li>\n</ol>',
+    actual
+  )
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-80)', t => {
-//   const actual =
-//     compile('    chunk1\n\n    chunk2\n  \n \n \n    chunk3')
-//   )
-//   t.is('<pre><code>chunk1\n\nchunk2\n\n\n\nchunk3\n</code></pre>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-79)', t => {
+  const actual = compile('    <a/>\n    *hi*\n\n    - one')
+  t.is('<pre><code>&lt;a/&gt;\n*hi*\n\n- one\n</code></pre>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-81)', t => {
-//   const actual = compile('    chunk1\n      \n      chunk2')
-//   t.is('<pre><code>chunk1\n  \n  chunk2\n</code></pre>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-80)', t => {
+  const actual = compile('    chunk1\n\n    chunk2\n  \n \n \n    chunk3')
+  t.is('<pre><code>chunk1\n\nchunk2\n\n\n\nchunk3\n</code></pre>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-82)', t => {
-//   const actual = compile('Foo\n    bar\n')
-//   t.is('<p>Foo\nbar</p>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-81)', t => {
+  const actual = compile('    chunk1\n      \n      chunk2')
+  t.is('<pre><code>chunk1\n  \n  chunk2\n</code></pre>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-83)', t => {
-//   const actual = compile('    foo\nbar')
-//   t.is('<pre><code>foo\n</code></pre>\n<p>bar</p>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-82)', t => {
+  const actual = compile('Foo\n    bar\n')
+  t.is('<p>Foo\nbar</p>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-84)', t => {
-//   const actual =
-//     compile('# Heading\n    foo\nHeading\n------\n    foo\n----')
-//   )
-//   t.is(
-//     '<h1>Heading</h1>\n<pre><code>foo\n</code></pre>\n<h2>Heading</h2>\n<pre><code>foo\n</code></pre>\n<hr>',
-//     actual
-//   )
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-83)', t => {
+  const actual = compile('    foo\nbar')
+  t.is('<pre><code>foo\n</code></pre><p>bar</p>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-85)', t => {
-//   const actual = compile('        foo\n    bar')
-//   t.is('<pre><code>    foo\nbar\n</code></pre>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-84)', t => {
+  const actual = compile('# Heading\n    foo\nHeading\n------\n    foo\n----')
+  t.is(
+    '<h1>Heading</h1><pre><code>foo\n</code></pre><h2>Heading</h2><pre><code>foo\n</code></pre><hr>',
+    actual
+  )
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-86)', t => {
-//   const actual = compile('\n    \n    foo\n    \n')
-//   t.is('<pre><code>foo\n</code></pre>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-85)', t => {
+  const actual = compile('        foo\n    bar')
+  t.is('<pre><code>    foo\nbar\n</code></pre>', actual)
+})
 
-// test('Indented code blocks (https://github.github.com/gfm/#example-87)', t => {
-//   const actual = compile('    foo  ')
-//   t.is('<pre><code>foo  \n</code></pre>', actual)
-// })
+test('Indented code blocks (https://github.github.com/gfm/#example-86)', t => {
+  const actual = compile('\n    \n    foo\n    \n')
+  t.is('<pre><code>foo\n</code></pre>', actual)
+})
+
+test('Indented code blocks (https://github.github.com/gfm/#example-87)', t => {
+  const actual = compile('    foo  ')
+  t.is('<pre><code>foo  \n</code></pre>', actual)
+})
 
 // test('Fenced code blocks (https://github.github.com/gfm/#example-88)', t => {
 //   const actual = compile('```\n<\n >\n```')

@@ -24,6 +24,10 @@ export class Parser {
           )
           break
 
+        case 'CODE_BLOCK':
+          output += this.renderer.codeBlock((tok as t.CodeBlock).code)
+          break
+
         case 'PARAGRAPH':
           output += this.renderer.paragraph((tok as t.Paragraph).text)
           break

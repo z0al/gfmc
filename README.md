@@ -25,7 +25,7 @@ The project is still in active development and currently supports:
 - [x] Thematic breaks
 - [x] ATX headings
 - [x] Setext headings
-- [ ] Indented code blocks
+- [x] Indented code blocks
 - [ ] Fenced code blocks
 - [ ] HTML blocks
 - [ ] Link reference definitions

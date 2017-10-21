@@ -37,6 +37,17 @@ export interface Heading extends Token {
   atx: boolean
 }
 
+// An indented code block is composed of one or more indented chunks separated
+// by blank lines. An indented chunk is a sequence of non-blank lines, each
+// indented four or more spaces. The contents of the code block are the literal
+// contents of the lines, including trailing line endings, minus four spaces of
+// indentation. An indented code block has no info string.
+//
+// ref: https://github.github.com/gfm/#indented-code-blocks
+export interface CodeBlock extends Token {
+  code: string
+}
+
 // A sequence of non-blank lines that cannot be interpreted as other kinds of
 // blocks
 //

@@ -1,7 +1,9 @@
+// Ours
+import { calculateSpaces } from './helpers'
 import * as t from './tokens'
 
 // Helpers
-const indent = /^( {4,})\S/
+const indent = /^((?: |  |   )?\t|    )/
 const spaces = /^ */
 const blank = /^( |\t)*$/
 
@@ -42,7 +44,7 @@ export class Scanner {
     const lines = this.src.split('\n')
 
     for (const index of lines.keys()) {
-      let line = this.expandTabs(lines[index])
+      let line = lines[index]
 
       // Blank line?
       const isBlank = blank.exec(line)
@@ -54,19 +56,50 @@ export class Scanner {
           // Continue to next line
           continue
         }
+        // A code block?
+        if (this.insideCodeBlock) {
+          // The line has more than 4 spaces?
+          if (calculateSpaces(line) >= 4) {
+            this.addBuffer(line.replace(indent, ''))
+          } else {
+            // Add a blank line
+            this.addBuffer('')
+          }
+
+          // Last line? then let's add the token now
+          if (index === lines.length - 1) {
+            tokens.push(this.codeBlockToken())
+          }
+
+          // Continue to next line
+          continue
+        }
       } else {
-        // Has indent?
-        const hasIndent = indent.exec(line)
-        if (hasIndent) {
+        // Has indentation?
+        if (calculateSpaces(line) >= 4) {
           // An indented code block cannot interrupt a paragraph
           if (this.insideParagraph) {
             this.addBuffer(line)
+          } else {
+            // OK, it must be a code block
+            this.insideCodeBlock = true
+            // The first 4 spaces aren't part of the content
+            this.addBuffer(line.replace(indent, ''))
 
-            // Continue to next line
-            continue
+            // Last line? then let's add the token now
+            if (index === lines.length - 1) {
+              tokens.push(this.codeBlockToken())
+            }
           }
-          // OK, it must be a code block
+
+          // Continue to next line
+          continue
         } else {
+          // Open code block?
+          if (this.insideCodeBlock) {
+            tokens.push(this.codeBlockToken())
+          }
+
           // Remove spaces from the beginning only
           line = line.replace(spaces, '')
 
@@ -142,28 +175,32 @@ export class Scanner {
     return tokens
   }
 
-  /**
-   * Expands tabs to spaces at the beginning of string. It doesn't touch 
-   * internal tabs or those at the end of string.
-   * 
-   * This is only meant to make writing checks easier!
-   *  
-   * @param {string} str 
-   */
-  public expandTabs(str: string): string {
-    const result = str.split('')
-    for (const index of result.keys()) {
-      const char = result[index]
-      if (char.match(/\S/)) {
-        // Oops! We've reached the first non-whitespace character, let's quit
-        break
-      }
-      if (char === '\t') {
-        result[index] = ' '.repeat(4 - index % 4)
-      }
-    }
-    return result.join('')
+  // ==================================================================
+  // > Token Helpers
+  // ==================================================================
+
+  // Code block
+  private codeBlockToken(): t.CodeBlock {
+    // Blank lines preceding or following an indented code block are not
+    // included in it
+    const code = this.reset().replace(/\n{2,}$/, '\n')
+    return { code, type: 'CODE_BLOCK' }
   }
+
+  // Heading
+  private headingToken(level: number, atx = false): t.Heading {
+    const text = this.reset().trim()
+    return { atx, level, text, type: 'HEADING' }
+  }
+  // Paragraph
+  private paragraphToken(): t.Paragraph {
+    const text = this.reset().trim()
+    return { text, type: 'PARAGRAPH' }
+  }
+
+  // ==================================================================
+  // > Other utils
+  // ==================================================================
 
   /**
    * Adds given string to buffer
@@ -176,33 +213,12 @@ export class Scanner {
   }
 
   /**
-   * Generates Paragraph token from current buffer
-   * 
-   * @returns {Paragraph} token
-   */
-  private paragraphToken(): t.Paragraph {
-    const text = this.reset().trim()
-    return { text, type: 'PARAGRAPH' }
-  }
-
-  /**
-   * Generates Heading token from current buffer
-   * 
-   * @param {number} level 
-   * @param {boolean} atx 
-   * @returns {Heading} token
-   */
-  private headingToken(level: number, atx = false): t.Heading {
-    const text = this.reset().trim()
-    return { atx, level, text, type: 'HEADING' }
-  }
-
-  /**
    * Resets everything to its default (i.e. buffer, flags ..etc)
    * 
    * @returns the old buffer
    */
   private reset(): string {
+    this.insideCodeBlock = false
     this.insideParagraph = false
     const str = this.buffer
     this.buffer = ''
