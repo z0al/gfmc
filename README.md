@@ -4,16 +4,22 @@
 
 # GFM Compiler
 
-Specification compliance [GitHub Flavored Markdown](https://github.github.com/gfm) (GFM) compiler
+JavaScript pure implementation of [GitHub Flavored Markdown](https://github.github.com/gfm) (GFM) specification.
+
+## Why?
+
+- ✅ 💯 Specification compliance
+- 🚫 No dependencies
+- 🚀 Works in Node.js, and Browser
 
 ## Usage
 
 ```javascript
-import gfmc from('gfmc')
+import gfm from('gfmc')
 
 const markdown = '# This is title  '
 
-console.log(gfmc(markdown))
+console.log(gfm(markdown))
 // =>
 // <h1>This is title</h1>
 ```
