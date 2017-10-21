@@ -29,22 +29,18 @@ console.log(gfm(markdown))
 
 TODO
 
-## TODO
+## Progress
 
 The project is still in active development and currently doesn't support:
 
 - Fenced code blocks
 - HTML blocks
 - Link reference definitions
-- Paragraphs
-- Blank lines
 - Tables 
 - Block quotes
-- List items
-- Task list items 
 - Lists
+- Task lists
 - Backslash escapes
-- Entity and numeric character references
 - Code spans
 - Emphasis and strong emphasis
 - Strikethrough 
