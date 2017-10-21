@@ -6,17 +6,18 @@ const spaces = /^ */
 const blank = /^( |\t)*$/
 
 export class Scanner {
+  // current buffer
   private src: string
-
-  // Tokens patterns
-  private ATX = /^(#{1,6})($| .*)/
-  private ATX_CLOSE = /( #+ *$|^#+$)/
-  private SETEXT_CLOSE = /^(-{2,}|=+)$/
-  private THEMATIC_BREAK = /^([-*_]) *(?:\1 *){2,}$/
+  private buffer = ''
 
   // Flags
   private insideSetext = false
-  private buffer = '' // current buffer
+
+  // Tokens patterns
+  private ATX = /^(#{1,6})($|(?: |\t).*)/
+  private ATX_CLOSE = /((?: |\t)#+(?: |\t)*$|^#+$)/
+  private SETEXT_CLOSE = /^(-{2,}|=+)(?: |\t)*$/
+  private THEMATIC_BREAK = /^([-*_])(?: |\t)*(?:\1(?: |\t)*){2,}$/
 
   constructor(src: string) {
     // For security reasons, the Unicode character U+0000 must be replaced with
@@ -30,14 +31,17 @@ export class Scanner {
     this.src = this.src.replace(/\r\n|\r/g, '\n')
   }
 
+  /**
+   * Scans the source string line by line and generate tokens
+   *  
+   * @returns {Token[]} list
+   */
   public scan(): t.Token[] {
-    // Tokens list
     const tokens: t.Token[] = []
-
     const lines = this.src.split('\n')
 
-    for (let index = 0; index < lines.length; index++) {
-      let line = lines[index]
+    for (const index of lines.keys()) {
+      let line = this.expandTabs(lines[index])
 
       // Blank line?
       const isBlank = blank.exec(line)
@@ -78,7 +82,7 @@ export class Scanner {
           const isThematic = this.THEMATIC_BREAK.exec(line)
           if (isThematic) {
             if (this.insideSetext) {
-              if (/^-+( |\t)*$/.exec(line)) {
+              if (this.SETEXT_CLOSE.exec(line)) {
                 tokens.push(this.headingToken(2))
 
                 // Continue to next line
@@ -121,17 +125,61 @@ export class Scanner {
         }
       }
     }
+
+    // Done!
     return tokens
   }
+
+  /**
+   * Expands tabs to spaces at the beginning of string. It doesn't touch 
+   * internal tabs or those at the end of string.
+   * 
+   * This is only meant to make writing checks easier!
+   *  
+   * @param {string} str 
+   */
+  public expandTabs(str: string): string {
+    const result = str.split('')
+    for (const index of result.keys()) {
+      const char = result[index]
+      if (char.match(/\S/)) {
+        // Oops! We've reached the first non-whitespace character, let's quit
+        break
+      }
+      if (char === '\t') {
+        result[index] = ' '.repeat(4 - index % 4)
+      }
+    }
+    return result.join('')
+  }
+
+  /**
+   * Generates Paragraph token from current buffer
+   * 
+   * @returns {Paragraph} token
+   */
   private paragraphToken(): t.Paragraph {
     const text = this.reset().trim()
     return { text, type: 'PARAGRAPH' }
   }
+
+  /**
+   * Generates Heading token from current buffer
+   * 
+   * @param {number} level 
+   * @param {boolean} atx 
+   * @returns {Heading} token
+   */
   private headingToken(level: number, atx = false): t.Heading {
     const text = this.reset().trim()
     return { atx, level, text, type: 'HEADING' }
   }
 
+  /**
+   * Resets everything to its default (i.e. buffer, flags ..etc)
+   * 
+   * @returns the old buffer
+   */
   private reset(): string {
     this.insideSetext = false
     const str = this.buffer

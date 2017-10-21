@@ -9,72 +9,80 @@ import test from 'ava'
 // Ours
 import compile from '../src'
 
-// test('Tabs (https://github.github.com/gfm/#example-1)', t => {
-//   const actual = compile('	foo→baz→→bim')
-//   t.is('<pre><code>foo	baz→→bim\n</code></pre>', actual)
-// })
+// ====================================================================
+// >  Tabs
+// ====================================================================
 
-// test('Tabs (https://github.github.com/gfm/#example-2)', t => {
-//   const actual = compile('  	foo→baz→→bim')
-//   t.is('<pre><code>foo	baz→→bim\n</code></pre>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-1)', t => {
+  const actual = compile('\tfoo\tbaz\t\tbim')
+  t.is('<pre><code>foo	baz\t\tbim\n</code></pre>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-3)', t => {
-//   const actual = compile('    a	a\n    ὐ→a')
-//   t.is('<pre><code>a	a\nὐ→a\n</code></pre>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-2)', t => {
+  const actual = compile('  \tfoo\tbaz\t\tbim')
+  t.is('<pre><code>foo	baz\t\tbim\n</code></pre>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-4)', t => {
-//   const actual = compile('  - foo\n\n	bar')
-//   t.is('<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-3)', t => {
+  const actual = compile('    a\ta\n    ὐ\ta')
+  t.is('<pre><code>a	a\nὐ\ta\n</code></pre>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-5)', t => {
-//   const actual = compile('- foo\n\n	→bar')
-//   t.is(
-//     '<ul>\n<li>\n<p>foo</p>\n<pre><code>  bar\n</code></pre>\n</li>\n</ul>',
-//     actual
-//   )
-// })
+test('Tabs (https://github.github.com/gfm/#example-4)', t => {
+  const actual = compile('  - foo\n\n\tbar')
+  t.is('<ul><li><p>foo</p><p>bar</p></li></ul>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-6)', t => {
-//   const actual = compile('>	→foo')
-//   t.is('<blockquote>\n<pre><code>  foo\n</code></pre>\n</blockquote>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-5)', t => {
+  const actual = compile('- foo\n\n\t\tbar')
+  t.is('<ul><li><p>foo</p><pre><code>  bar\n</code></pre></li></ul>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-7)', t => {
-//   const actual = compile('-	→foo')
-//   t.is('<ul>\n<li>\n<pre><code>  foo\n</code></pre>\n</li>\n</ul>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-6)', t => {
+  const actual = compile('>\t\tfoo')
+  t.is('<blockquote><pre><code>  foo\n</code></pre></blockquote>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-8)', t => {
-//   const actual = compile('    foo\n	bar')
-//   t.is('<pre><code>foo\nbar\n</code></pre>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-7)', t => {
+  const actual = compile('-\t\tfoo')
+  t.is('<ul><li><pre><code>  foo\n</code></pre></li></ul>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-9)', t => {
-//   const actual = compile(' - foo\n   - bar\n	 - baz')
-//   t.is(
-//     '<ul>\n<li>foo\n<ul>\n<li>bar\n<ul>\n<li>baz</li>\n</ul>\n</li>\n</ul>\n</li>\n</ul>',
-//     actual
-//   )
-// })
+test('Tabs (https://github.github.com/gfm/#example-8)', t => {
+  const actual = compile('    foo\n\tbar')
+  t.is('<pre><code>foo\nbar\n</code></pre>', actual)
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-10)', t => {
-//   const actual = compile('#	Foo')
-//   t.is('<h1>Foo</h1>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-9)', t => {
+  const actual = compile(' - foo\n   - bar\n\t - baz')
+  t.is(
+    '<ul><li>foo<ul><li>bar\n<ul><li>baz</li></ul></li></ul></li></ul>',
+    actual
+  )
+})
 
-// test('Tabs (https://github.github.com/gfm/#example-11)', t => {
-//   const actual = compile('*	*→*→')
-//   t.is('<hr>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-10)', t => {
+  const actual = compile('#\tFoo')
+  t.is('<h1>Foo</h1>', actual)
+})
 
-// test('Precedence (https://github.github.com/gfm/#example-12)', t => {
-//   const actual = compile('- `one\n- two`')
-//   t.is('<ul>\n<li>`one</li>\n<li>two`</li>\n</ul>', actual)
-// })
+test('Tabs (https://github.github.com/gfm/#example-11)', t => {
+  const actual = compile('*\t*\t*\t')
+  t.is('<hr>', actual)
+})
 
+// ====================================================================
+// >  Precedence
+// ====================================================================
+
+test('Precedence (https://github.github.com/gfm/#example-12)', t => {
+  const actual = compile('- `one\n- two`')
+  t.is('<ul><li>`one</li><li>two`</li></ul>', actual)
+})
+
+// ====================================================================
+// >  Thematic Breaks
+// ====================================================================
 test('Thematic breaks (https://github.github.com/gfm/#example-13)', t => {
   const actual = compile('***\n---\n___')
   t.is('<hr><hr><hr>', actual)
@@ -169,6 +177,10 @@ test('Thematic breaks (https://github.github.com/gfm/#example-31)', t => {
   const actual = compile('- Foo\n- * * *')
   t.is('<ul>\n<li>Foo</li>\n<li>\n<hr>\n</li>\n</ul>', actual)
 })
+
+// ====================================================================
+// >  ATX Headings
+// ====================================================================
 
 test('ATX headings (https://github.github.com/gfm/#example-32)', t => {
   const actual = compile(
@@ -267,6 +279,10 @@ test('ATX headings (https://github.github.com/gfm/#example-49)', t => {
   const actual = compile('## \n#\n### ###')
   t.is('<h2></h2><h1></h1><h3></h3>', actual)
 })
+
+// ====================================================================
+// >  Setext Headings
+// ====================================================================
 
 test('Setext headings (https://github.github.com/gfm/#example-50)', t => {
   const actual = compile('Foo *bar*\n=========\n\nFoo *bar*\n---------')
