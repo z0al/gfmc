@@ -1,9 +1,12 @@
 <a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/yF8xMRYKxBs3t9VeMWabeRrx/ahmed-taj/gfmc'>
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/yF8xMRYKxBs3t9VeMWabeRrx/ahmed-taj/gfmc.svg' />
 </a>
 
 # GFM Compiler
+
+[![Travis](https://img.shields.io/travis/ahmed-taj/gfmc.svg)](travis-ci.org/ahmed-taj/gfmc)
+[![npm](https://img.shields.io/npm/v/gfmc.svg)](https://www.npmjs.com/package/gfmc)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-brightgreen.svg?style=flat-square)](#contributors)
 
 JavaScript pure implementation of [GitHub Flavored Markdown](https://github.github.com/gfm) (GFM) specification.
 
