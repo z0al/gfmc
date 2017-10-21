@@ -11,6 +11,7 @@ export class Scanner {
   private buffer = ''
 
   // Flags
+  private insideCodeBlock = false
   private insideParagraph = false
 
   // Tokens patterns
@@ -57,7 +58,14 @@ export class Scanner {
         // Has indent?
         const hasIndent = indent.exec(line)
         if (hasIndent) {
-          // TODO
+          // An indented code block cannot interrupt a paragraph
+          if (this.insideParagraph) {
+            this.addBuffer(line)
+
+            // Continue to next line
+            continue
+          }
+          // OK, it must be a code block
         } else {
           // Remove spaces from the beginning only
           line = line.replace(spaces, '')
@@ -68,9 +76,11 @@ export class Scanner {
             if (this.insideParagraph) {
               tokens.push(this.paragraphToken())
             }
-            // Grap the text
-            // It may has a closing sequence!
-            this.buffer = (isATX[2] || '').replace(this.ATX_CLOSE, '').trim()
+            // Add the text to buffer
+            this.addBuffer(
+              // It may has a closing sequence!
+              (isATX[2] || '').replace(this.ATX_CLOSE, '').trim()
+            )
 
             tokens.push(this.headingToken(isATX[1].length, true))
 
@@ -114,6 +124,7 @@ export class Scanner {
             // If we ain't inside a paragraph then we have no buffer; use this
             // line as a buffer
             if (!this.insideParagraph) {
+              // DO NOT use this.addBuffer here!
               this.buffer = line
             }
             // It must be paragraph anyway!
@@ -121,7 +132,7 @@ export class Scanner {
           } else {
             // Let's assume paragraph start and move forward
             this.insideParagraph = true
-            this.buffer += line + '\n'
+            this.addBuffer(line)
           }
         }
       }
@@ -152,6 +163,16 @@ export class Scanner {
       }
     }
     return result.join('')
+  }
+
+  /**
+   * Adds given string to buffer
+   * 
+   * @param text 
+   */
+  private addBuffer(text: string) {
+    // Well, I only added this method to prevent missing '\n's ;)
+    this.buffer += text + '\n'
   }
 
   /**
