@@ -11,8 +11,9 @@ node_js:
 
 before_script:
   - npm prune
-after_success:
-  - npm run semantic-release
+# Enable this when we are ready to publish 1.x
+# after_success:
+#   - npm run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
