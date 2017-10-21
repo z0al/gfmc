@@ -11,7 +11,7 @@ export class Scanner {
   private buffer = ''
 
   // Flags
-  private insideSetext = false
+  private insideParagraph = false
 
   // Tokens patterns
   private ATX = /^(#{1,6})($|(?: |\t).*)/
@@ -46,8 +46,8 @@ export class Scanner {
       // Blank line?
       const isBlank = blank.exec(line)
       if (isBlank) {
-        // This is open Setext heading?
-        if (this.insideSetext) {
+        // Are we inside paragraph?
+        if (this.insideParagraph) {
           tokens.push(this.paragraphToken())
 
           // Continue to next line
@@ -65,7 +65,7 @@ export class Scanner {
           // ATX heading?
           const isATX = this.ATX.exec(line)
           if (isATX) {
-            if (this.insideSetext) {
+            if (this.insideParagraph) {
               tokens.push(this.paragraphToken())
             }
             // Grap the text
@@ -81,7 +81,7 @@ export class Scanner {
           // Thematic break?
           const isThematic = this.THEMATIC_BREAK.exec(line)
           if (isThematic) {
-            if (this.insideSetext) {
+            if (this.insideParagraph) {
               if (this.SETEXT_CLOSE.exec(line)) {
                 tokens.push(this.headingToken(2))
 
@@ -102,7 +102,7 @@ export class Scanner {
 
           // Closing Setext heading?
           const isSetext = this.SETEXT_CLOSE.exec(line)
-          if (isSetext && this.insideSetext) {
+          if (isSetext && this.insideParagraph) {
             tokens.push(this.headingToken(line[0] === '=' ? 1 : 2))
 
             // Continue to next line
@@ -111,15 +111,16 @@ export class Scanner {
 
           // Last line?
           if (index === lines.length - 1) {
-            // If we ain't inside Setext heading then use this line as buffer
-            if (!this.insideSetext) {
+            // If we ain't inside a paragraph then we have no buffer; use this
+            // line as a buffer
+            if (!this.insideParagraph) {
               this.buffer = line
             }
             // It must be paragraph anyway!
             tokens.push(this.paragraphToken())
           } else {
-            // Let's assume Setext heading start and move forward
-            this.insideSetext = true
+            // Let's assume paragraph start and move forward
+            this.insideParagraph = true
             this.buffer += line + '\n'
           }
         }
@@ -181,7 +182,7 @@ export class Scanner {
    * @returns the old buffer
    */
   private reset(): string {
-    this.insideSetext = false
+    this.insideParagraph = false
     const str = this.buffer
     this.buffer = ''
     return str
