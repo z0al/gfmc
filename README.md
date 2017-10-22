@@ -18,7 +18,7 @@ JavaScript pure implementation of [GitHub Flavored Markdown](https://github.gith
 
 ## Installation
 
-**NOTE:** I haven't publish the npm package yet. It will automatically be published by Travis when all [spec](./test/spec.ts) tests are passing
+**NOTE:** I haven't published the npm package yet. It will automatically get published by Travis when all [spec](./test/spec.ts) tests are passing
 ```sh
 $ npm add --save gfmc
 ```
