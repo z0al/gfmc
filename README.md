@@ -26,11 +26,11 @@ $ npm add --save gfmc
 ## Usage
 
 ```javascript
-import gfm from('gfmc')
+import gfmc from('gfmc')
 
 const markdown = '# This is title  '
 
-console.log(gfm(markdown))
+console.log(gfmc(markdown))
 // =>
 // <h1>This is title</h1>
 ```
@@ -38,7 +38,7 @@ console.log(gfm(markdown))
 ## Options
 
 ```typescript
-gfm(src: string, options: Object)
+gfmc(src: string, options: Object)
 ```
 
 | Option            | Description                                                                           |
@@ -82,6 +82,10 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/ahmed-taj/gfmc/releases).
+
+## Like it?
+
+Give it a star(⭐️) 👆
 
 ## License
 
