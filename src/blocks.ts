@@ -7,17 +7,19 @@
 
 // Ours
 import { calculateSpaces } from './helpers'
-import * as t from './tokens'
+import * as t from './types'
 
-// Helpers
-const indent = /^ {0,3}\t| {4}/
-const spaces = /^ */
-const blank = /^( |\t)*$/
+// Constants
+const ATX = /^(#{1,6})($|(?: |\t).*)/
+const ATX_CLOSE = /((?: |\t)#+(?: |\t)*$|^#+$)/
+const SETEXT_CLOSE = /^(-{2,}|=+)(?: |\t)*$/
+const THEMATIC_BREAK = /^([-*_])(?: |\t)*(?:\1(?: |\t)*){2,}$/
+
+const INDENT = /^ {0,3}\t| {4}/
+const SPACES = /^ */
+const BLANK = /^( |\t)*$/
 
 export class Scanner {
-  // buffer
-  private src: string
-  private buffer = ''
   // Tokens
   private tokensList: t.Token[] = []
 
@@ -25,17 +27,13 @@ export class Scanner {
   private insideCodeBlock = false
   private insideParagraph = false
 
-  // Tokens patterns
-  private ATX = /^(#{1,6})($|(?: |\t).*)/
-  private ATX_CLOSE = /((?: |\t)#+(?: |\t)*$|^#+$)/
-  private SETEXT_CLOSE = /^(-{2,}|=+)(?: |\t)*$/
-  private THEMATIC_BREAK = /^([-*_])(?: |\t)*(?:\1(?: |\t)*){2,}$/
+  // Helpers
+  private src: string
+  private buffer = ''
 
   constructor(src: string) {
     // For security reasons, the Unicode character U+0000 must be replaced with
     // the REPLACEMENT CHARACTER (U+FFFD).
-    //
-    // ref: https://github.github.com/gfm/#insecure-characters
     this.src = src.replace(/\0/g, '\uFFFD')
 
     // A line ending is a newline (U+000A), a carriage return (U+000D) not
@@ -52,20 +50,21 @@ export class Scanner {
     this.tokensList = []
     const lines = this.src.split('\n')
 
-    for (const index of lines.keys()) {
-      let line = lines[index]
+    for (let lineNo = 0; lineNo < lines.length; lineNo++) {
+      let line = lines[lineNo]
       // Last line?
-      const last = index === lines.length - 1
+      const last = lineNo === lines.length - 1
 
       // Blank line?
-      if (blank.exec(line)) {
+      if (line.match(BLANK)) {
         this.handleBlankLine(line, last)
 
         continue
       }
 
       // Has indentation?
-      if (calculateSpaces(line) >= 4) {
+      const spaces = calculateSpaces(line)
+      if (spaces >= 4) {
         this.handleIndentation(line, last)
 
         continue
@@ -77,30 +76,30 @@ export class Scanner {
       }
 
       // Remove spaces from the beginning only
-      line = line.replace(spaces, '')
+      line = line.replace(SPACES, '')
 
       // ATX heading?
-      const isATX = this.ATX.exec(line)
-      if (isATX) {
+      const atx = line.match(ATX)
+      if (atx) {
         if (this.insideParagraph) {
           this.tokensList.push(this.paragraphToken())
         }
         // Add the text to buffer
         this.addBuffer(
           // It may has a closing sequence!
-          (isATX[2] || '').replace(this.ATX_CLOSE, '').trim()
+          (atx[2] || '').replace(ATX_CLOSE, '').trim()
         )
 
-        this.tokensList.push(this.headingToken(isATX[1].length, true))
+        this.tokensList.push(this.headingToken(atx[1].length, true))
 
         continue
       }
 
       // Thematic break?
-      const isThematic = this.THEMATIC_BREAK.exec(line)
-      if (isThematic) {
+      const thematic = line.match(THEMATIC_BREAK)
+      if (thematic) {
         if (this.insideParagraph) {
-          if (this.SETEXT_CLOSE.exec(line)) {
+          if (line.match(SETEXT_CLOSE)) {
             this.tokensList.push(this.headingToken(2))
 
             continue
@@ -109,7 +108,7 @@ export class Scanner {
         }
 
         this.tokensList.push({
-          char: isThematic[1],
+          char: thematic[1],
           type: 'THEMATIC_BREAK'
         } as t.ThematicBreak)
 
@@ -117,8 +116,7 @@ export class Scanner {
       }
 
       // Closing Setext heading?
-      const isSetext = this.SETEXT_CLOSE.exec(line)
-      if (isSetext && this.insideParagraph) {
+      if (line.match(SETEXT_CLOSE) && this.insideParagraph) {
         this.tokensList.push(this.headingToken(line[0] === '=' ? 1 : 2))
 
         continue
@@ -157,7 +155,7 @@ export class Scanner {
       // A code block?
       // The line has more than 4 spaces?
       if (calculateSpaces(line) >= 4) {
-        this.addBuffer(line.replace(indent, ''))
+        this.addBuffer(line.replace(INDENT, ''))
       } else {
         // Add a blank line
         this.addBuffer('')
@@ -178,7 +176,7 @@ export class Scanner {
       // OK, it must be a code block
       this.insideCodeBlock = true
       // The first 4 spaces aren't part of the content
-      this.addBuffer(line.replace(indent, ''))
+      this.addBuffer(line.replace(INDENT, ''))
 
       if (last) {
         this.tokensList.push(this.codeBlockToken())

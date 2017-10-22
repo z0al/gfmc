@@ -1,6 +1,6 @@
 // Ours
 import { Renderer } from './render'
-import * as t from './tokens'
+import * as t from './types'
 
 /**
  * GFM Parser
@@ -16,16 +16,16 @@ export class Parser {
     while (tok) {
       // Type check
       switch (tok.type) {
+        case 'CODE_BLOCK':
+          output += this.renderer.codeBlock((tok as t.CodeBlock).code)
+          break
+
         case 'HEADING':
           output += this.renderer.heading(
             (tok as t.Heading).text,
             (tok as t.Heading).level,
             (tok as t.Heading).atx
           )
-          break
-
-        case 'CODE_BLOCK':
-          output += this.renderer.codeBlock((tok as t.CodeBlock).code)
           break
 
         case 'PARAGRAPH':
