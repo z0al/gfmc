@@ -1,45 +1,41 @@
-// Native
-import { readdirSync } from 'fs'
-import { resolve, basename } from 'path'
-
 // Packages
-import typescript from 'rollup-plugin-typescript'
+import typescript from 'rollup-plugin-typescript2'
 
 // Ours
 import pkg from './package.json'
 
-const plugins = [
-  typescript({
-    typescript: require('typescript')
-  })
-]
-
 // Generates Rollup entries for test files
 const testFiles = () => {
-  const entries = readdirSync(resolve(__dirname, 'test'))
+  const entries = ['spec', 'helpers']
   return entries.map(e => {
     return {
-      input: `test/${e}`,
-      output: [{ file: `dist/${basename(e, '.ts')}-test.js`, format: 'cjs' }],
+      input: `./test/${e}.ts`,
+      output: [{ file: `dist/test/${e}.js`, format: 'cjs' }],
       external: ['ava'],
-      plugins
+      plugins: [typescript()]
     }
   })
 }
 
 export default [
-  // Main bundle
+  // Browser build
+  {
+    input: 'src/index.ts',
+    output: [{ file: pkg.browser, format: 'umd', name: 'gfmc' }],
+    plugins: [
+      typescript({ tsconfigOverride: { compilerOptions: { target: 'es5' } } })
+    ]
+  },
+  // Node.js/Bundlers
   {
     input: 'src/index.ts',
     output: [
       // CommonJS (for Node) build
       { file: pkg.main, format: 'cjs' },
-      // Browser-friendly UMD build
-      { file: pkg.browser, format: 'umd', name: 'gfmc' },
       // ES module (for bundlers) build
       { file: pkg.module, format: 'es' }
     ],
-    plugins
+    plugins: [typescript()]
   },
   // Test files
   ...testFiles()

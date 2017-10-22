@@ -7,7 +7,7 @@
 import test from 'ava'
 
 // Ours
-import gfmc from '../src'
+import gfmc from '../src/gfmc'
 
 // ====================================================================
 // >  Tabs

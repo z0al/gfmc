@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "module": "es2015",
-    "sourceMap": true,
     "lib": ["esnext"],
+    "outDir": "dist",
     "target": "es6"
   },
-  "include": ["src/*"],
+  "include": ["./src/*", "./test/*"],
   "exclude": ["node_modules"]
 }

@@ -10,7 +10,8 @@
  */
 export const calculateSpaces = (str: string): number => {
   let result = 0
-  for (const index of str.split('').keys()) {
+  const chars = str.split('')
+  for (let index = 0; index < chars.length; index++) {
     const char = str[index]
     if (char.match(/\S/)) {
       // Oops! We've reached the first non-whitespace character, let's quit
