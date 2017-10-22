@@ -3,7 +3,7 @@ import { calculateSpaces } from './helpers'
 import * as t from './tokens'
 
 // Helpers
-const indent = /^((?: |  |   )?\t|    )/
+const indent = /^ {0,3}\t| {4}/
 const spaces = /^ */
 const blank = /^( |\t)*$/
 
@@ -45,6 +45,8 @@ export class Scanner {
 
     for (const index of lines.keys()) {
       let line = lines[index]
+      // Last line?
+      const last = index === lines.length - 1
 
       // Blank line?
       const isBlank = blank.exec(line)
@@ -53,7 +55,6 @@ export class Scanner {
         if (this.insideParagraph) {
           tokens.push(this.paragraphToken())
 
-          // Continue to next line
           continue
         }
         // A code block?
@@ -66,12 +67,10 @@ export class Scanner {
             this.addBuffer('')
           }
 
-          // Last line? then let's add the token now
-          if (index === lines.length - 1) {
+          if (last) {
             tokens.push(this.codeBlockToken())
           }
 
-          // Continue to next line
           continue
         }
       } else {
@@ -86,13 +85,11 @@ export class Scanner {
             // The first 4 spaces aren't part of the content
             this.addBuffer(line.replace(indent, ''))
 
-            // Last line? then let's add the token now
-            if (index === lines.length - 1) {
+            if (last) {
               tokens.push(this.codeBlockToken())
             }
           }
 
-          // Continue to next line
           continue
         } else {
           // Open code block?
@@ -117,7 +114,6 @@ export class Scanner {
 
             tokens.push(this.headingToken(isATX[1].length, true))
 
-            // Continue to next line
             continue
           }
 
@@ -128,7 +124,6 @@ export class Scanner {
               if (this.SETEXT_CLOSE.exec(line)) {
                 tokens.push(this.headingToken(2))
 
-                // Continue to next line
                 continue
               }
               tokens.push(this.paragraphToken())
@@ -139,7 +134,6 @@ export class Scanner {
               type: 'THEMATIC_BREAK'
             } as t.ThematicBreak)
 
-            // Continue to next line
             continue
           }
 
@@ -148,12 +142,10 @@ export class Scanner {
           if (isSetext && this.insideParagraph) {
             tokens.push(this.headingToken(line[0] === '=' ? 1 : 2))
 
-            // Continue to next line
             continue
           }
 
-          // Last line?
-          if (index === lines.length - 1) {
+          if (last) {
             // If we ain't inside a paragraph then we have no buffer; use this
             // line as a buffer
             if (!this.insideParagraph) {
@@ -183,19 +175,16 @@ export class Scanner {
   private codeBlockToken(): t.CodeBlock {
     // Blank lines preceding or following an indented code block are not
     // included in it
-    const code = this.reset().replace(/\n{2,}$/, '\n')
-    return { code, type: 'CODE_BLOCK' }
+    return { code: this.reset().replace(/\n{2,}$/, '\n'), type: 'CODE_BLOCK' }
   }
 
   // Heading
   private headingToken(level: number, atx = false): t.Heading {
-    const text = this.reset().trim()
-    return { atx, level, text, type: 'HEADING' }
+    return { atx, level, text: this.reset().trim(), type: 'HEADING' }
   }
   // Paragraph
   private paragraphToken(): t.Paragraph {
-    const text = this.reset().trim()
-    return { text, type: 'PARAGRAPH' }
+    return { text: this.reset().trim(), type: 'PARAGRAPH' }
   }
 
   // ==================================================================
