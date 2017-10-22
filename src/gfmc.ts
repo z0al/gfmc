@@ -1,9 +1,14 @@
 // Ours
 import { Scanner } from './blocks'
-import { Options } from './options'
 import { Parser } from './parse'
-import { HTMLRenderer } from './render'
+import { HTMLRenderer, Renderer } from './render'
 
+// Compiler options
+interface Options {
+  renderer?: Renderer
+}
+
+// Compiler entry point
 export default (src: string, options: Options = {}): string => {
   const scanner = new Scanner(src)
   const { renderer = new HTMLRenderer() } = options

@@ -1,2 +1,2 @@
 export { HTMLRenderer } from './render'
-export { default } from './gfm'
+export { default } from './gfmc'
