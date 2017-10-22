@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Ahmed T. Ali <ah.tajelsir@gmail.com>",
   "files": ["dist/gfmc*", "README.md"],
-  "main": "dist/gfmc.cjs.js",
+  "main": "dist/gfmc.js",
   "module": "dist/gfmc.esm.js",
   "browser": "dist/gfmc.umd.js",
   "repository": "https://github.com/ahmed-taj/gfmc",
