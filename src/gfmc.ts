@@ -12,7 +12,7 @@ export interface Options {
 const gfmc = (src: string, options: Options = {}): string => {
   const scanner = new Scanner(src)
   const { renderer = new HTMLRenderer() } = options
-  const parser = new Parser(scanner.scan(), renderer)
+  const parser = new Parser(scanner.tokens(), renderer)
   return parser.parse()
 }
 
